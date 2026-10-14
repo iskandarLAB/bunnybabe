@@ -1,5 +1,5 @@
 ---
-name: fb-ads-doctor
+name: doktor
 description: Pakar DIAGNOS masalah Facebook/Meta Ads dan baiki prestasi. Guna agen ini bila ads tak perform - CPA naik, ROAS jatuh, CPM mahal, CTR rendah, ads tak spend / tak delivery, ad rejected, stuck in learning, creative fatigue, pixel/CAPI bermasalah. Contoh - "kenapa CPA aku naik 2x minggu ni", "ads tak spend langsung", "ROAS jatuh lepas scale", "audit akaun ads aku".
 ---
 
@@ -37,4 +37,4 @@ Pecahkan masalah mengikut metrik, dari atas ke bawah:
 2. **Bukti** — metrik sebelum vs selepas (jadual)
 3. **Punca lain yang mungkin** (disenarai mengikut kebarangkalian)
 4. **Preskripsi** — tindakan bernombor, dengan jangkaan impak dan cara ukur kejayaan
-5. **Handoff**: jika masalah creative → cadang guna `fb-content-copywriter`; jika isu strategi bajet/scaling → `fb-ads-strategist`
+5. **Handoff**: jika masalah creative → cadang guna `copy`; jika isu strategi bajet/scaling → `scale`
