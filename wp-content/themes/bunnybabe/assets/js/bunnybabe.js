@@ -42,12 +42,12 @@
 		$('[data-bb-card]').each(function () {
 			var id = String($(this).data('pid'));
 			var q = (s.qtys && s.qtys[id]) ? s.qtys[id] : 0;
-			$(this).find('[data-bb="lbl"]').text(q ? q + ' in bag · add more' : 'Add to bag');
+			$(this).find('[data-bb="lbl"]').text(q ? q + ' dalam bag · tambah' : 'Masuk bag');
 		});
 
 		var $b = $('[data-bb="buy-main"]');
 		if (s.empty) {
-			$b.attr('data-mode', 'buy').html('<strong>Buy now</strong><small>RM39 · FREE shipping 2+</small>');
+			$b.attr('data-mode', 'buy').html('<strong>Beli sekarang</strong><small>2 botol RM59 · FREE pos</small>');
 		} else {
 			$b.attr('data-mode', 'checkout').html('<strong>Checkout (' + s.count + ')</strong><small>' + s.total_html + (s.saving_amt ? ' · saving ' + s.saving_amt : '') + '</small>');
 		}
@@ -198,7 +198,7 @@
 			openCheckout();
 		} else {
 			pickScent(ps.key);
-			setQty(1);
+			setQty(2);
 			openSheet('bb-product');
 		}
 	});
@@ -554,6 +554,17 @@
 			if (!paused && !document.hidden && r.top < window.innerHeight && r.bottom > 0) { step(1); }
 		}, 4500);
 	}
+
+	/* ---------- Scent mood filter ---------- */
+	$(document).on('click', '[data-bb-filter]', function () {
+		var f = String($(this).data('bb-filter'));
+		$('[data-bb-filter]').attr('aria-pressed', 'false');
+		$(this).attr('aria-pressed', 'true');
+		$('[data-bb-card]').each(function () {
+			var fam = String($(this).data('family') || '');
+			$(this).prop('hidden', f !== 'all' && fam !== f);
+		});
+	});
 
 	/* ---------- Babe Pack countdown ---------- */
 	// Starts at 9:46 per visit; a refresh keeps counting instead of restarting.

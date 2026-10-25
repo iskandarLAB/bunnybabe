@@ -25,17 +25,16 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 	<div class="bb-hero__copy">
 		<span class="bb-sticker bb-up">cute n chaos ♡</span>
 		<h1 class="bb-hero__title bb-up" style="animation-delay:.1s"><?php esc_html_e( 'Cute outside.', 'bunnybabe' ); ?><br><?php esc_html_e( 'Chaos inside.', 'bunnybabe' ); ?></h1>
-		<p class="bb-hero__lead bb-up" style="animation-delay:.2s"><?php esc_html_e( 'Affordable eau de parfum for everyday girls. Five scents, one for every mood. 30ml bottles at RM39 each.', 'bunnybabe' ); ?></p>
-		<div class="bb-hero__ctas bb-up" style="animation-delay:.3s">
-			<a class="bb-btn bb-btn--black" href="#scents"><?php esc_html_e( 'Shop the scents', 'bunnybabe' ); ?></a>
-			<a class="bb-btn bb-btn--pink" href="#bundles"><?php esc_html_e( 'See bundles', 'bunnybabe' ); ?></a>
+		<p class="bb-hero__lead bb-up" style="animation-delay:.2s"><?php esc_html_e( 'Perfume EDP yang wangi macam mahal, harga student-friendly. 5 scent, satu untuk setiap mood.', 'bunnybabe' ); ?></p>
+		<div class="bb-hero__offer bb-up" style="animation-delay:.25s">
+			<span class="bb-hero__offer-tag"><?php esc_html_e( '2 botol', 'bunnybabe' ); ?></span>
+			<strong>RM59</strong>
+			<s>RM78</s>
+			<span class="bb-hero__offer-note"><?php esc_html_e( 'RM29.50 seketul · FREE pos', 'bunnybabe' ); ?></span>
 		</div>
-		<div class="bb-hero__facts bb-up" style="animation-delay:.4s">
-			<span><?php esc_html_e( 'Eau de Parfum', 'bunnybabe' ); ?></span>
-			<span>30ml / 1.0 fl oz</span>
-			<span><?php esc_html_e( '5 scents', 'bunnybabe' ); ?></span>
-			<span><?php esc_html_e( 'Save up to RM96', 'bunnybabe' ); ?></span>
-			<span><?php esc_html_e( 'FREE shipping 2+ bottles', 'bunnybabe' ); ?></span>
+		<div class="bb-hero__ctas bb-up" style="animation-delay:.3s">
+			<a class="bb-btn bb-btn--pink bb-cta" href="#bundles" data-bb-open="<?php echo esc_attr( array_key_first( $bb['scents'] ) ); ?>" data-qty="2"><span><?php esc_html_e( 'Ambil 2 botol · RM59', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
+			<a class="bb-hero__link" href="#bundles"><?php esc_html_e( 'Lihat semua pakej · dari RM39', 'bunnybabe' ); ?></a>
 		</div>
 	</div>
 	<div class="bb-hero__media">
@@ -44,25 +43,18 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 			<svg class="bb-hero__sparkle bb-twinkle" width="56" height="56" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" fill="#fff" stroke="#111" stroke-width="1.2"/></svg>
 			<svg class="bb-hero__heart bb-beat" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2A5 5 0 0 1 12 6.4a5 5 0 0 1 9.6 5.4C19.5 16.4 12 21 12 21z" fill="#fff" stroke="#111" stroke-width="1.4"/></svg>
 		</div>
-		<div class="bb-hero__price bb-wobble"><strong>RM39</strong><span>30ML EDP</span></div>
+		<div class="bb-hero__price bb-wobble"><strong>2 = RM59</strong><span><?php esc_html_e( '30ML EDP', 'bunnybabe' ); ?></span></div>
 		<div class="bb-hero__tag bb-sway"><?php esc_html_e( 'Smell cute. Do chaos.', 'bunnybabe' ); ?></div>
 	</div>
 </section>
 
-<!-- Marquee -->
-<div class="bb-marquee" aria-hidden="true">
-	<div class="bb-marquee__track">
-		<?php for ( $g = 0; $g < 2; $g++ ) : ?>
-			<div class="bb-marquee__group">
-				<?php
-				for ( $r = 0; $r < 2; $r++ ) {
-					foreach ( $bb['scents'] as $s ) {
-						echo '<span>' . esc_html( $s['name'] ) . '</span><i>♡</i>';
-					}
-				}
-				?>
-			</div>
-		<?php endfor; ?>
+<!-- Trust strip -->
+<div class="bb-trust" aria-label="<?php esc_attr_e( 'Why shop with us', 'bunnybabe' ); ?>">
+	<div class="bb-wrap bb-trust__inner">
+		<span><?php esc_html_e( 'FREE pos 2+ botol', 'bunnybabe' ); ?></span><i aria-hidden="true">✦</i>
+		<span><?php esc_html_e( 'Eau de Parfum 30ml', 'bunnybabe' ); ?></span><i aria-hidden="true">✦</i>
+		<span><?php esc_html_e( 'Bayar selamat FPX & kad', 'bunnybabe' ); ?></span><i aria-hidden="true">✦</i>
+		<span><?php esc_html_e( 'Tracking terus ke WhatsApp', 'bunnybabe' ); ?></span>
 	</div>
 </div>
 
@@ -70,112 +62,37 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 <section class="bb-bundles" id="bundles">
 	<div class="bb-wrap bb-bundles__inner">
 		<div class="bb-center">
-			<span class="bb-eyebrow"><?php esc_html_e( 'Bundle & save', 'bunnybabe' ); ?></span>
-			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'More bottles, more moods', 'bunnybabe' ); ?></h2>
-			<p class="bb-lead" style="color:#111"><?php esc_html_e( 'Mix any scents you like. Bundle prices apply automatically in your bag. The more you grab, the less you pay per bottle.', 'bunnybabe' ); ?></p>
+			<span class="bb-eyebrow"><?php esc_html_e( 'Pilih pakej', 'bunnybabe' ); ?></span>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'One for you. Two? Even better.', 'bunnybabe' ); ?></h2>
+			<p class="bb-lead" style="color:#111"><?php esc_html_e( 'Mix & match scent apa-apa, boleh scent sama. Harga pakej auto apply dalam bag. Lagi banyak, lagi murah seketul.', 'bunnybabe' ); ?></p>
 		</div>
 		<div class="bb-plans">
-			<div class="bb-plan bb-lift bb-reveal">
-				<div><div class="bb-plan__name">SOLO</div><div class="bb-plan__sub"><?php esc_html_e( '1 bottle · 30ml', 'bunnybabe' ); ?></div></div>
+			<div class="bb-plan bb-plan--solo bb-lift bb-reveal">
+				<div><div class="bb-plan__name">SOLO</div><div class="bb-plan__sub"><?php esc_html_e( '1 botol · 30ml', 'bunnybabe' ); ?></div></div>
 				<div class="bb-plan__price"><strong>RM39</strong></div>
-				<ul><li><?php esc_html_e( 'Any one scent', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Perfect first try', 'bunnybabe' ); ?></li><li><?php esc_html_e( '+ RM5 shipping', 'bunnybabe' ); ?></li></ul>
-				<a class="bb-btn bb-btn--white bb-cta" href="#scents" data-bb-open="vanilla" data-qty="1"><span><?php esc_html_e( 'Pick 1 scent', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
+				<ul><li><?php esc_html_e( 'Satu scent pilihan', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Nak cuba dulu', 'bunnybabe' ); ?></li><li><?php esc_html_e( '+ RM5 pos', 'bunnybabe' ); ?></li></ul>
+				<a class="bb-btn bb-btn--white bb-cta" href="#scents" data-bb-open="vanilla" data-qty="1"><span><?php esc_html_e( 'Pilih 1 botol', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
 			</div>
-			<div class="bb-plan bb-lift bb-reveal">
-				<span class="bb-plan__tag bb-sway2"><?php esc_html_e( 'jimat RM19 ♡', 'bunnybabe' ); ?></span>
-				<div><div class="bb-plan__name">DUO</div><div class="bb-plan__sub"><?php esc_html_e( '2 bottles · 30ml each', 'bunnybabe' ); ?></div></div>
+			<div class="bb-plan bb-plan--duo bb-lift bb-reveal">
+				<span class="bb-plan__tag bb-sway2"><?php esc_html_e( 'paling laku ♡', 'bunnybabe' ); ?></span>
+				<div><div class="bb-plan__name">DUO</div><div class="bb-plan__sub"><?php esc_html_e( '2 botol · 30ml setiap satu', 'bunnybabe' ); ?></div></div>
 				<div class="bb-plan__price"><strong>RM59</strong><s>RM78</s></div>
-				<ul><li><?php esc_html_e( 'RM29.50 per bottle', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Save RM19', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'FREE shipping', 'bunnybabe' ); ?></li></ul>
-				<a class="bb-btn bb-btn--black bb-cta bb-cta--pinkshadow" href="#scents" data-bb-open="vanilla" data-qty="2"><span><?php esc_html_e( 'Pick 2 scents', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
+				<ul><li><?php esc_html_e( 'RM29.50 seketul', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Jimat RM19', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'FREE pos', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Mix & match 2 scent', 'bunnybabe' ); ?></li></ul>
+				<a class="bb-btn bb-btn--black bb-cta bb-cta--pinkshadow" href="#scents" data-bb-open="vanilla" data-qty="2"><span><?php esc_html_e( 'Pilih 2 botol', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
 			</div>
 			<div class="bb-plan bb-plan--hero bb-lift bb-reveal">
 				<span class="bb-plan__tag bb-sway2"><?php esc_html_e( 'best value ♡', 'bunnybabe' ); ?></span>
-				<div><div class="bb-plan__name">BABE PACK</div><div class="bb-plan__sub"><?php esc_html_e( '5 bottles · 30ml each', 'bunnybabe' ); ?></div></div>
+				<div><div class="bb-plan__name">BABE PACK</div><div class="bb-plan__sub"><?php esc_html_e( '5 botol · 30ml setiap satu', 'bunnybabe' ); ?></div></div>
 				<div class="bb-countdown" data-bb-countdown="586" role="timer" aria-live="off" hidden><?php esc_html_e( 'Deal ends in', 'bunnybabe' ); ?> <strong data-bb="cd-time">09:46</strong></div>
 				<div class="bb-plan__price"><strong>RM99</strong><s>RM195</s></div>
-				<ul><li><?php esc_html_e( 'RM19.80 per bottle', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Save RM96', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'FREE shipping', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Collect all 5 scents', 'bunnybabe' ); ?></li><li><?php esc_html_e( '+ FREE mystery tester 5ml', 'bunnybabe' ); ?></li></ul>
+				<ul><li><?php esc_html_e( 'RM19.80 seketul', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Jimat RM96', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'FREE pos', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Dapat kelima-lima scent', 'bunnybabe' ); ?></li><li><?php esc_html_e( '+ FREE mystery tester 5ml', 'bunnybabe' ); ?></li></ul>
 				<button type="button" class="bb-btn bb-btn--pink bb-cta bb-cta--light" data-bb-addall>
 					<svg class="bb-spin" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" fill="#fff" stroke="#111" stroke-width="1.4"/></svg>
-					<span><?php esc_html_e( 'Add all 5 scents', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?>
+					<span><?php esc_html_e( 'Ambil semua 5', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?>
 				</button>
 			</div>
 		</div>
-	</div>
-</section>
-
-<!-- Scents -->
-<section class="bb-wrap bb-section bb-stack" id="scents">
-	<div class="bb-sechead">
-		<div>
-			<span class="bb-eyebrow"><?php esc_html_e( 'The collection', 'bunnybabe' ); ?></span>
-			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Pick your chaos', 'bunnybabe' ); ?></h2>
-		</div>
-		<p class="bb-lead" style="max-width:380px;font-size:16px"><?php esc_html_e( 'Every scent is a 30ml Eau de Parfum at RM39. Mix any of them into a bundle and save more.', 'bunnybabe' ); ?></p>
-	</div>
-	<div class="bb-grid-cards">
-		<?php
-		foreach ( $bb['scents'] as $key => $s ) :
-			$pid = bb_scent_product_id( $key );
-			$q   = $pid && isset( $qtys[ $pid ] ) ? $qtys[ $pid ] : 0;
-			?>
-			<article class="bb-card bb-lift bb-reveal" id="<?php echo esc_attr( $key ); ?>" data-bb-card data-pid="<?php echo esc_attr( $pid ); ?>">
-				<button type="button" class="bb-card__img" data-bb-open="<?php echo esc_attr( $key ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s scent */ __( 'View %s', 'bunnybabe' ), $s['name'] ) ); ?>"><img src="<?php echo esc_url( bb_asset( 'img/' . $s['poster'] ) ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %s scent */ __( 'Bunny Babe %s with its scent notes', 'bunnybabe' ), $s['name'] ) ); ?>" width="800" height="1192" loading="lazy"></button>
-				<div class="bb-card__body">
-					<div>
-						<h3 class="bb-card__name"><?php echo esc_html( $s['name'] ); ?></h3>
-						<span class="bb-card__mood"><?php echo esc_html( $s['mood'] ); ?></span>
-					</div>
-					<div class="bb-chips">
-						<?php foreach ( $s['notes'] as $note ) : ?>
-							<span class="bb-chip"><?php echo esc_html( $note ); ?></span>
-						<?php endforeach; ?>
-					</div>
-					<div class="bb-card__buy">
-						<span class="bb-price">RM39</span>
-						<button type="button" class="bb-btn bb-btn--pink bb-cta bb-addbtn" data-bb-open="<?php echo esc_attr( $key ); ?>" <?php disabled( ! $pid ); ?> <?php echo $pid ? '' : 'title="' . esc_attr__( 'Run Appearance → Bunny Babe Setup first', 'bunnybabe' ) . '"'; ?>>
-							<?php echo $icon_bag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
-							<span data-bb="lbl"><?php echo $q ? esc_html( sprintf( /* translators: %d qty */ __( '%d in bag · add more', 'bunnybabe' ), $q ) ) : esc_html__( 'Add to bag', 'bunnybabe' ); ?></span>
-						</button>
-					</div>
-				</div>
-			</article>
-		<?php endforeach; ?>
-	</div>
-</section>
-
-<!-- Mood -->
-<section class="bb-wrap bb-section bb-stack">
-	<h2 class="bb-h2 bb-reveal" style="font-size:clamp(40px,5vw,64px)"><?php esc_html_e( 'Same girl. Different mood.', 'bunnybabe' ); ?></h2>
-	<div class="bb-tiles">
-		<a class="bb-tile bb-reveal" href="#vanilla"><small><?php esc_html_e( 'FEELING SOFT & COZY', 'bunnybabe' ); ?></small><strong>Vanilla or Marsh <span class="bb-arrow">→</span></strong></a>
-		<a class="bb-tile bb-reveal" href="#secret"><small><?php esc_html_e( 'FEELING BOLD', 'bunnybabe' ); ?></small><strong>Secret <span class="bb-arrow">→</span></strong></a>
-		<a class="bb-tile bb-reveal" href="#aurelle"><small><?php esc_html_e( 'FEELING ROMANTIC', 'bunnybabe' ); ?></small><strong>Aurelle <span class="bb-arrow">→</span></strong></a>
-		<a class="bb-tile bb-reveal" href="#swift"><small><?php esc_html_e( 'FEELING FRESH', 'bunnybabe' ); ?></small><strong>Swift <span class="bb-arrow">→</span></strong></a>
-	</div>
-</section>
-
-<!-- Videos -->
-<section class="bb-wrap bb-section bb-stack" id="videos">
-	<div class="bb-sechead">
-		<div>
-			<span class="bb-eyebrow"><?php esc_html_e( 'See it in action', 'bunnybabe' ); ?></span>
-			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Watch the chaos', 'bunnybabe' ); ?></h2>
-		</div>
-		<span class="bb-sticker" style="transform:rotate(2deg)"><?php esc_html_e( 'swipe for more →', 'bunnybabe' ); ?></span>
-	</div>
-	<div class="bb-videos">
-		<?php
-		$videos = array(
-			array( 'ad-1', __( 'Bunny Babe perfume ad', 'bunnybabe' ) ),
-			array( 'ad-2', __( 'Bunny Babe before and after perfume ad', 'bunnybabe' ) ),
-			array( 'ad-3', __( 'Bunny Babe problem and solution perfume ad', 'bunnybabe' ) ),
-		);
-		foreach ( $videos as $v ) :
-			?>
-			<div class="bb-video bb-lift">
-				<video src="<?php echo esc_url( bb_asset( 'video/' . $v[0] . '.mp4' ) ); ?>" poster="<?php echo esc_url( bb_asset( 'video/' . $v[0] . '.jpg' ) ); ?>" controls playsinline loop preload="metadata" aria-label="<?php echo esc_attr( $v[1] ); ?>"></video>
-			</div>
-		<?php endforeach; ?>
+		<p class="bb-bundles__note"><?php echo esc_html( sprintf( /* translators: %s voucher code */ __( 'Bayar selamat FPX & kad · Hantar EasyParcel · Kod %s: RM5 off order pertama 2+ botol', 'bunnybabe' ), strtoupper( $bb['first_coupon'] ) ) ); ?></p>
 	</div>
 </section>
 
@@ -186,7 +103,8 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 	<div class="bb-sechead">
 		<div>
 			<span class="bb-eyebrow"><?php esc_html_e( 'Real babes, real reviews', 'bunnybabe' ); ?></span>
-			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'They said it, not us ♡', 'bunnybabe' ); ?></h2>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( "Don't just take our word.", 'bunnybabe' ); ?></h2>
+			<p class="bb-lead"><?php esc_html_e( 'Review sebenar dari pembeli TikTok Shop. Nama disorok untuk privasi.', 'bunnybabe' ); ?></p>
 		</div>
 		<div class="bb-revnav">
 			<button type="button" class="bb-iconbtn" data-bb-rev="-1" aria-label="<?php esc_attr_e( 'Previous review', 'bunnybabe' ); ?>"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
@@ -201,7 +119,9 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 				<?php endif; ?>
 				<?php if ( $r['quote'] ) : ?>
 					<figcaption>
-						<span class="bb-review__stars" aria-label="<?php echo esc_attr( sprintf( /* translators: %d stars */ __( '%d out of 5 stars', 'bunnybabe' ), $r['stars'] ) ); ?>"><?php echo esc_html( str_repeat( '★', $r['stars'] ) ); ?></span>
+						<?php if ( $r['stars'] ) : ?>
+							<span class="bb-review__stars" aria-label="<?php echo esc_attr( sprintf( /* translators: %d stars */ __( '%d out of 5 stars', 'bunnybabe' ), $r['stars'] ) ); ?>"><?php echo esc_html( str_repeat( '★', $r['stars'] ) ); ?></span>
+						<?php endif; ?>
 						<blockquote>“<?php echo esc_html( $r['quote'] ); ?>”</blockquote>
 						<span class="bb-review__who"><strong><?php echo esc_html( $r['name'] ); ?></strong><?php if ( $r['scent'] ) : ?><span class="bb-chip"><?php echo esc_html( $r['scent'] ); ?></span><?php endif; ?></span>
 					</figcaption>
@@ -212,49 +132,136 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 </section>
 <?php endif; ?>
 
-<!-- Voucher -->
-<section class="bb-wrap bb-section" id="voucher">
-	<div class="bb-voucher">
-		<div class="bb-voucher__copy">
-			<span class="bb-sticker"><?php esc_html_e( 'first order gift ♡', 'bunnybabe' ); ?></span>
-			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Claim your RM5 voucher', 'bunnybabe' ); ?></h2>
-			<p class="bb-lead" style="color:#111"><?php esc_html_e( 'Drop your WhatsApp number and get RM5 off your first order of 2+ bottles, plus another RM5 off your second.', 'bunnybabe' ); ?></p>
-
-			<form class="bb-voucher__form" data-bb="claim-form" novalidate>
-				<label class="bb-label" for="bb-claim-phone"><?php esc_html_e( 'WhatsApp number', 'bunnybabe' ); ?></label>
-				<div class="bb-voucher__row">
-					<input class="bb-input" id="bb-claim-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="012-345 6789" required>
-					<input type="text" name="website" tabindex="-1" autocomplete="off" hidden>
-					<button class="bb-btn bb-btn--black" type="submit"><?php esc_html_e( 'Claim voucher', 'bunnybabe' ); ?></button>
-				</div>
-				<span class="bb-msg" data-bb="claim-error" hidden></span>
-				<span class="bb-small"><?php esc_html_e( 'One per customer.', 'bunnybabe' ); ?></span>
-			</form>
-
-			<div class="bb-voucher__form" data-bb="claim-done" hidden>
-				<strong style="font-size:18px"><?php esc_html_e( "Yay, it's yours! It's added to your bag automatically once you have 2+ bottles:", 'bunnybabe' ); ?></strong>
-				<div class="bb-voucher__row" style="align-items:center">
-					<span class="bb-code"><?php echo esc_html( strtoupper( $bb['first_coupon'] ) ); ?></span>
-					<button class="bb-btn bb-btn--black" type="button" data-bb="copy" data-code="<?php echo esc_attr( strtoupper( $bb['first_coupon'] ) ); ?>"><?php esc_html_e( 'Copy code', 'bunnybabe' ); ?></button>
-				</div>
-				<span class="bb-small" style="font-size:14px"><?php esc_html_e( 'Your second-order RM5 voucher comes by WhatsApp after your first order.', 'bunnybabe' ); ?></span>
-				<a href="#scents" style="font-size:15px;font-weight:700"><?php esc_html_e( 'Shop now and use it →', 'bunnybabe' ); ?></a>
-			</div>
+<!-- Videos -->
+<section class="bb-wrap bb-section bb-stack" id="videos">
+	<div class="bb-sechead">
+		<div>
+			<span class="bb-eyebrow"><?php esc_html_e( 'Tengok sendiri', 'bunnybabe' ); ?></span>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Babes dah cuba', 'bunnybabe' ); ?></h2>
 		</div>
-		<div class="bb-ticket-wrap">
-			<div class="bb-ticket">
-				<div class="bb-ticket__top">
-					<small><?php esc_html_e( 'BUNNY BABE VOUCHER', 'bunnybabe' ); ?></small>
-					<span class="bb-ticket__big">RM5</span>
-					<span class="bb-ticket__off">OFF</span>
-				</div>
-				<div class="bb-ticket__cut"></div>
-				<div class="bb-ticket__bottom">
-					<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2A5 5 0 0 1 12 6.4a5 5 0 0 1 9.6 5.4C19.5 16.4 12 21 12 21z" fill="#FF5CB8" stroke="#111" stroke-width="1.4"/></svg>
-					<span><?php esc_html_e( '1st & 2nd order', 'bunnybabe' ); ?></span>
-				</div>
+		<span class="bb-sticker" style="transform:rotate(2deg)"><?php esc_html_e( 'swipe for more →', 'bunnybabe' ); ?></span>
+	</div>
+	<div class="bb-videos">
+		<?php
+		$videos = array(
+			array( 'ad-1', __( 'Bunny Babe perfume ad', 'bunnybabe' ) ),
+			array( 'ad-2', __( 'Bunny Babe before and after perfume ad', 'bunnybabe' ) ),
+			array( 'ad-3', __( 'Bunny Babe problem and solution perfume ad', 'bunnybabe' ) ),
+		);
+		foreach ( $videos as $v ) :
+			?>
+			<div class="bb-video bb-lift">
+				<video src="<?php echo esc_url( bb_asset( 'video/' . $v[0] . '.mp4' ) ); ?>" poster="<?php echo esc_url( bb_asset( 'video/' . $v[0] . '.jpg' ) ); ?>" controls playsinline loop preload="none" aria-label="<?php echo esc_attr( $v[1] ); ?>"></video>
 			</div>
+		<?php endforeach; ?>
+	</div>
+	<div class="bb-center">
+		<a class="bb-btn bb-btn--pink bb-cta" href="#bundles"><span><?php esc_html_e( 'Your turn, babe · Pilih pakej', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
+	</div>
+</section>
+
+<!-- Scents -->
+<section class="bb-wrap bb-section bb-stack" id="scents">
+	<div class="bb-sechead">
+		<div>
+			<span class="bb-eyebrow"><?php esc_html_e( 'Tak tahu nak pilih?', 'bunnybabe' ); ?></span>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Find your mood match.', 'bunnybabe' ); ?></h2>
 		</div>
+		<p class="bb-lead" style="max-width:380px;font-size:16px"><?php esc_html_e( 'Setiap scent Eau de Parfum 30ml, RM39. Campur dalam pakej untuk jimat lagi.', 'bunnybabe' ); ?></p>
+	</div>
+	<div class="bb-filters" role="group" aria-label="<?php esc_attr_e( 'Filter scents by mood', 'bunnybabe' ); ?>">
+		<button type="button" class="bb-filter" data-bb-filter="all" aria-pressed="true"><?php esc_html_e( 'Semua', 'bunnybabe' ); ?></button>
+		<?php foreach ( bb_scent_families() as $fam_key => $fam_label ) : ?>
+			<button type="button" class="bb-filter" data-bb-filter="<?php echo esc_attr( $fam_key ); ?>" aria-pressed="false"><?php echo esc_html( $fam_label ); ?></button>
+		<?php endforeach; ?>
+	</div>
+	<div class="bb-grid-cards">
+		<?php
+		foreach ( $bb['scents'] as $key => $s ) :
+			$pid = bb_scent_product_id( $key );
+			$q   = $pid && isset( $qtys[ $pid ] ) ? $qtys[ $pid ] : 0;
+			?>
+			<article class="bb-card bb-lift bb-reveal" id="<?php echo esc_attr( $key ); ?>" data-bb-card data-pid="<?php echo esc_attr( $pid ); ?>" data-family="<?php echo esc_attr( isset( $s['family'] ) ? $s['family'] : '' ); ?>">
+				<button type="button" class="bb-card__img" data-bb-open="<?php echo esc_attr( $key ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s scent */ __( 'View %s', 'bunnybabe' ), $s['name'] ) ); ?>"><img src="<?php echo esc_url( bb_asset( 'img/' . $s['poster'] ) ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %s scent */ __( 'Bunny Babe %s with its scent notes', 'bunnybabe' ), $s['name'] ) ); ?>" width="800" height="1192" loading="lazy"></button>
+				<div class="bb-card__body">
+					<div>
+						<h3 class="bb-card__name"><?php echo esc_html( $s['name'] ); ?></h3>
+						<span class="bb-card__mood"><?php echo esc_html( $s['mood'] ); ?></span>
+						<?php if ( ! empty( $s['when'] ) ) : ?>
+							<span class="bb-card__when"><?php echo esc_html( sprintf( /* translators: %s occasion */ __( 'Sesuai: %s', 'bunnybabe' ), $s['when'] ) ); ?></span>
+						<?php endif; ?>
+					</div>
+					<div class="bb-chips">
+						<?php foreach ( $s['notes'] as $note ) : ?>
+							<span class="bb-chip"><?php echo esc_html( $note ); ?></span>
+						<?php endforeach; ?>
+					</div>
+					<div class="bb-card__buy">
+						<span class="bb-price">RM39</span>
+						<button type="button" class="bb-btn bb-btn--pink bb-cta bb-addbtn" data-bb-open="<?php echo esc_attr( $key ); ?>" <?php disabled( ! $pid ); ?> <?php echo $pid ? '' : 'title="' . esc_attr__( 'Run Appearance → Bunny Babe Setup first', 'bunnybabe' ) . '"'; ?>>
+							<?php echo $icon_bag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
+							<span data-bb="lbl"><?php echo $q ? esc_html( sprintf( /* translators: %d qty */ __( '%d dalam bag · tambah', 'bunnybabe' ), $q ) ) : esc_html__( 'Masuk bag', 'bunnybabe' ); ?></span>
+						</button>
+					</div>
+				</div>
+			</article>
+		<?php endforeach; ?>
+	</div>
+	<div class="bb-stuck">
+		<div>
+			<strong><?php esc_html_e( 'Masih tak boleh pilih?', 'bunnybabe' ); ?></strong>
+			<span><?php esc_html_e( 'Babe Pack dapat kelima-lima scent + FREE mystery tester 5ml.', 'bunnybabe' ); ?></span>
+		</div>
+		<button type="button" class="bb-btn bb-btn--black bb-cta bb-cta--pinkshadow" data-bb-addall><span><?php esc_html_e( 'RM99, free pos', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></button>
+	</div>
+</section>
+
+<!-- Why Bunny Babe -->
+<section class="bb-wrap bb-section bb-stack" id="why">
+	<div class="bb-sechead">
+		<div>
+			<span class="bb-eyebrow"><?php esc_html_e( 'Kenapa Bunny Babe', 'bunnybabe' ); ?></span>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Murah, tapi bukan murahan.', 'bunnybabe' ); ?></h2>
+		</div>
+	</div>
+	<div class="bb-why">
+		<div class="bb-why__item"><strong><?php esc_html_e( 'Eau de Parfum', 'bunnybabe' ); ?></strong><span><?php esc_html_e( 'Concentration tinggi, bukan body mist.', 'bunnybabe' ); ?></span></div>
+		<div class="bb-why__item"><strong><?php esc_html_e( 'Botol studded', 'bunnybabe' ); ?></strong><span><?php esc_html_e( 'Cantik untuk display & hadiah.', 'bunnybabe' ); ?></span></div>
+		<div class="bb-why__item"><strong><?php esc_html_e( '5 personaliti', 'bunnybabe' ); ?></strong><span><?php esc_html_e( 'Satu scent untuk setiap mood.', 'bunnybabe' ); ?></span></div>
+		<div class="bb-why__item"><strong><?php esc_html_e( 'FREE pos 2+', 'bunnybabe' ); ?></strong><span><?php esc_html_e( 'Tracking terus ke WhatsApp.', 'bunnybabe' ); ?></span></div>
+	</div>
+</section>
+
+<!-- FAQ -->
+<section class="bb-wrap bb-wrap--narrow bb-section bb-stack" id="faq">
+	<div class="bb-center">
+		<span class="bb-eyebrow"><?php esc_html_e( 'Your bag essential', 'bunnybabe' ); ?></span>
+		<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'Sebelum you checkout', 'bunnybabe' ); ?></h2>
+	</div>
+	<div class="bb-faq">
+		<details class="bb-faq__item" open>
+			<summary><?php esc_html_e( 'Boleh campur scent?', 'bunnybabe' ); ?></summary>
+			<p><?php esc_html_e( 'Boleh. Pilih scent berbeza atau sama. Harga pakej (2 = RM59, 5 = RM99) auto apply dalam bag.', 'bunnybabe' ); ?></p>
+		</details>
+		<details class="bb-faq__item">
+			<summary><?php esc_html_e( 'Kos penghantaran?', 'bunnybabe' ); ?></summary>
+			<p><?php esc_html_e( 'RM5 untuk 1 botol. FREE untuk 2 botol ke atas. Dihantar melalui EasyParcel.', 'bunnybabe' ); ?></p>
+		</details>
+		<details class="bb-faq__item">
+			<summary><?php esc_html_e( 'Boleh bayar guna apa?', 'bunnybabe' ); ?></summary>
+			<p><?php esc_html_e( 'FPX online banking dan kad debit/kredit, diproses dengan selamat oleh CHIP.', 'bunnybabe' ); ?></p>
+		</details>
+		<details class="bb-faq__item">
+			<summary><?php esc_html_e( 'Kalau botol pecah masa pos?', 'bunnybabe' ); ?></summary>
+			<p><?php esc_html_e( 'WhatsApp kami gambar parcel bila sampai, kami hantar botol baru.', 'bunnybabe' ); ?></p>
+		</details>
+		<details class="bb-faq__item">
+			<summary><?php esc_html_e( 'Macam mana nak track order?', 'bunnybabe' ); ?></summary>
+			<p><?php esc_html_e( 'Link tracking dihantar ke WhatsApp. Atau buka page', 'bunnybabe' ); ?> <a href="<?php echo esc_url( bb_track_url() ); ?>"><?php esc_html_e( 'Track order', 'bunnybabe' ); ?></a>.</p>
+		</details>
+	</div>
+	<div class="bb-center">
+		<a class="bb-btn bb-btn--pink bb-cta" href="#bundles" data-bb-open="<?php echo esc_attr( array_key_first( $bb['scents'] ) ); ?>" data-qty="2"><span><?php esc_html_e( 'Ambil 2 botol · RM59', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
 	</div>
 </section>
 
@@ -350,6 +357,7 @@ $bb_first = array_key_first( $bb['scents'] );
 						<input class="bb-input" id="bb-coupon" type="text" placeholder="BUNNY5" autocomplete="off">
 						<button type="button" class="bb-btn bb-btn--white" data-bb="apply-coupon"><?php esc_html_e( 'Apply', 'bunnybabe' ); ?></button>
 					</div>
+					<span class="bb-small"><?php echo esc_html( sprintf( /* translators: %s voucher code */ __( 'Order pertama 2+ botol? Guna kod %s untuk RM5 off.', 'bunnybabe' ), strtoupper( $bb['first_coupon'] ) ) ); ?></span>
 				</div>
 			</div>
 		</div>
@@ -375,6 +383,10 @@ $bb_first = array_key_first( $bb['scents'] );
 			<div class="bb-co-saving" data-bb="saving-banner" hidden></div>
 				<button type="button" class="bb-freebar" data-bb="co-upsell" data-bb-backbag style="display:block;width:100%;text-align:left;cursor:pointer;font:inherit;margin:0 0 14px" <?php echo ( 1 === (int) $n ) ? '' : 'hidden'; ?>><?php esc_html_e( '🚚 Add 1 more scent: 2 for RM59 + FREE shipping (just RM15 more) ›', 'bunnybabe' ); ?></button>
 			<div class="bb-co-form"><?php echo do_shortcode( '[woocommerce_checkout]' ); ?></div>
+			<div class="bb-co-promise">
+				<strong><?php esc_html_e( 'Botol pecah masa pos?', 'bunnybabe' ); ?></strong>
+				<span><?php esc_html_e( 'WhatsApp kami gambar parcel, kami hantar botol baru. Bayaran diproses dengan selamat oleh CHIP.', 'bunnybabe' ); ?></span>
+			</div>
 		</div>
 	</div>
 	<div class="bb-co__foot">
@@ -386,23 +398,6 @@ $bb_first = array_key_first( $bb['scents'] );
 	</div>
 </section>
 <?php endif; ?>
-
-<!-- Affiliate -->
-<section class="bb-wrap bb-section" id="affiliate">
-	<div class="bb-aff">
-		<div class="bb-aff__copy">
-			<span class="bb-aff__marker"><?php esc_html_e( 'jom join the chaos', 'bunnybabe' ); ?></span>
-			<h2 class="bb-h2" style="font-size:clamp(44px,5.5vw,80px)"><?php esc_html_e( 'Become a Bunny Babe affiliate', 'bunnybabe' ); ?></h2>
-			<p><?php esc_html_e( 'Share Bunny Babe with your followers and earn 10% commission on every sale you bring in. No stock, no risk. Sign up with a quick form.', 'bunnybabe' ); ?></p>
-		</div>
-		<div class="bb-aff__side">
-			<div class="bb-badge"><strong>10%</strong><span>COMMISSION</span></div>
-			<a class="bb-btn bb-btn--pink" href="<?php echo esc_url( $aff_url ? $aff_url : bb_whatsapp_url() ); ?>" target="_blank" rel="noopener">
-				<span><?php esc_html_e( 'Join as affiliate', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?>
-			</a>
-		</div>
-	</div>
-</section>
 
 <?php
 get_footer();

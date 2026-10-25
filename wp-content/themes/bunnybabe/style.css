@@ -3,7 +3,7 @@ Theme Name: Bunny Babe
 Theme URI: https://plum-gerbil-363565.hostingersite.com
 Author: Bunny Babe
 Description: One-page shop + checkout and order tracking for Bunny Babe perfume. Built for WooCommerce with bundle pricing (2 for RM35.50, 5 for RM85.50), free shipping from 2 bottles, first-order and second-order vouchers.
-Version: 1.4.1
+Version: 1.5.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: bunnybabe
@@ -597,3 +597,105 @@ body.bb-lock { overflow: hidden; }
 .bb-lock .bb-recent { display: none; }
 @media (min-width: 900px) { .bb-recent { left: 20px; bottom: 20px; } }
 @media (prefers-reduced-motion: reduce) { .bb-recent { transition: none; } }
+
+/* ==========================================================
+   1.5.0 — Ads landing merge (Design A copy + live shop flow)
+   ========================================================== */
+
+/* Hero offer + single primary CTA */
+.bb-hero__offer { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; align-self: flex-start; background: var(--bb-white); border: 2px solid var(--bb-black); border-radius: 20px; padding: 10px 18px; box-shadow: 4px 4px 0 var(--bb-pink); }
+.bb-hero__offer-tag { font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.bb-hero__offer strong { font-family: var(--bb-display); font-weight: 400; font-size: 44px; line-height: .9; }
+.bb-hero__offer s { font-size: 15px; color: var(--bb-ink-3); }
+.bb-hero__offer-note { flex-basis: 100%; font-size: 14px; font-weight: 600; color: var(--bb-ink-2); }
+.bb-hero__ctas { align-items: center; gap: 12px 20px; }
+.bb-hero__link { font-size: 15px; font-weight: 700; text-underline-offset: 4px; }
+.bb-hero__price strong { font-size: 30px; text-align: center; }
+
+/* Trust strip */
+.bb-trust { background: var(--bb-black); color: var(--bb-white); border-top: 2px solid var(--bb-black); }
+.bb-trust__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 16px; padding-top: 14px; padding-bottom: 14px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; text-align: center; }
+.bb-trust__inner i { font-style: normal; color: var(--bb-pink); }
+.bb-trust + .bb-bundles { margin-top: 0; border-top: 0; }
+
+/* Bundles note under the plans */
+.bb-bundles__note { margin: 0; text-align: center; font-size: 14px; font-weight: 600; }
+
+/* Mood filter */
+.bb-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.bb-filter { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 2px solid var(--bb-black); background: var(--bb-white); font-size: 14px; font-weight: 700; }
+.bb-filter[aria-pressed="true"] { background: var(--bb-black); color: var(--bb-white); }
+.bb-filter:hover { background: var(--bb-pink-soft); }
+.bb-filter[aria-pressed="true"]:hover { background: var(--bb-black); }
+.bb-card__mood { display: block; }
+.bb-card__when { display: block; margin-top: 4px; font-size: 13px; font-weight: 600; }
+
+/* "Still can't choose" box */
+.bb-stuck { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 24px; border: 2px solid var(--bb-black); border-radius: 24px; background: var(--bb-pink-soft); }
+.bb-stuck > div { display: flex; flex-direction: column; gap: 4px; }
+.bb-stuck strong { font-family: var(--bb-display); font-weight: 400; font-size: 32px; line-height: 1; }
+.bb-stuck span { font-size: 15px; }
+
+/* Why Bunny Babe */
+.bb-why { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.bb-why__item { display: flex; flex-direction: column; gap: 6px; padding: 22px; border: 2px solid var(--bb-black); border-radius: 20px; background: var(--bb-white); }
+.bb-why__item strong { font-family: var(--bb-display); font-weight: 400; font-size: 30px; line-height: 1; }
+.bb-why__item span { font-size: 15px; color: var(--bb-ink-2); }
+
+/* FAQ */
+.bb-faq { display: flex; flex-direction: column; gap: 10px; }
+.bb-faq__item { border: 2px solid var(--bb-black); border-radius: 18px; background: var(--bb-white); }
+.bb-faq__item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 0 20px; font-size: 16px; font-weight: 700; }
+.bb-faq__item summary::-webkit-details-marker { display: none; }
+.bb-faq__item summary::after { content: '+'; font-family: var(--bb-display); font-size: 28px; line-height: 1; transition: transform .2s ease; }
+.bb-faq__item[open] summary::after { transform: rotate(45deg); }
+.bb-faq__item p { margin: 0; padding: 0 20px 18px; font-size: 15px; line-height: 1.55; color: var(--bb-ink-2); }
+
+/* Checkout promise */
+.bb-co-promise { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; padding: 16px 18px; border: 2px solid var(--bb-black); border-radius: 18px; background: var(--bb-pink-soft); font-size: 14px; }
+.bb-co-promise strong { font-size: 15px; }
+.bb-coupon .bb-small { display: block; margin-top: 8px; }
+
+/* Visitors from ads: no exits in the header */
+.bb-ads.bb-front .bb-nav a:not(.bb-bagbtn) { display: none; }
+
+/* Small screens: product + offer above the fold, Duo first */
+@media (max-width: 700px) {
+	.bb-nav a:nth-child(1), .bb-nav a:nth-child(4) { display: inline; }
+	.bb-nav a:nth-child(2), .bb-nav a:nth-child(3) { display: none; }
+	.bb-hero { gap: 18px; padding-top: 8px; padding-bottom: 32px; }
+	.bb-hero__media { order: -1; flex-basis: 100%; }
+	.bb-hero__frame { max-width: none; aspect-ratio: 16 / 10; border-radius: 24px; }
+	.bb-hero__frame img { object-position: 50% 30%; }
+	.bb-hero__tag, .bb-hero__sparkle, .bb-hero .bb-sticker { display: none; }
+	.bb-hero__price { width: 92px; height: 92px; right: 8px; bottom: -12px; }
+	.bb-hero__price strong { font-size: 22px; }
+	.bb-hero__price span { font-size: 10px; }
+	.bb-hero__copy { flex-basis: 100%; gap: 14px; }
+	.bb-hero__title { font-size: 56px; }
+	.bb-hero__lead { font-size: 15px; }
+	.bb-hero__offer strong { font-size: 38px; }
+	.bb-hero__ctas .bb-btn { flex: 1 1 100%; }
+	.bb-hero__link { margin: 0 auto; }
+	.bb-trust__inner { gap: 6px 10px; font-size: 11px; }
+	.bb-bundles__inner { padding-top: 56px; padding-bottom: 56px; gap: 32px; }
+	.bb-plan--duo { order: 1; }
+	.bb-plan--hero { order: 2; }
+	.bb-plan--solo { order: 3; }
+	.bb-plan { padding: 26px; gap: 14px; }
+	.bb-plan__price strong { font-size: 60px; }
+	.bb-stuck .bb-btn { flex: 1 1 100%; }
+	.bb-grid-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+	.bb-card { padding: 8px; border-radius: 20px; }
+	.bb-card__img { border-radius: 14px; }
+	.bb-card__body { padding: 12px 4px 4px; gap: 10px; }
+	.bb-card__name { font-size: 30px; }
+	.bb-card__mood { font-size: 12px; }
+	.bb-card__when { font-size: 12px; }
+	.bb-card .bb-chips { display: none; }
+	.bb-card__buy { flex-direction: column; align-items: stretch; gap: 8px; }
+	.bb-price { font-size: 26px; }
+	.bb-addbtn { min-height: 44px; padding: 0 12px; font-size: 14px; }
+	.bb-review { flex-basis: 80vw; }
+	.bb-video { flex-basis: 220px; }
+}

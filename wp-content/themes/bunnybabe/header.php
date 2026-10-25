@@ -11,6 +11,7 @@ $bb_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_con
 </head>
 <body <?php body_class( trim( ( $bb_count ? 'bb-has-bag ' : '' ) . ( is_front_page() ? 'bb-front' : '' ) ) ); ?>>
 <?php wp_body_open(); ?>
+<script>(function(){try{var q=location.search,k='bb_ads';if(/[?&](ads=1|fbclid=|utm_source=(facebook|fb|ig|instagram|meta)\b)/i.test(q)){sessionStorage.setItem(k,'1');}if(sessionStorage.getItem(k)==='1'){document.body.classList.add('bb-ads');}}catch(e){}})();</script>
 <a class="bb-skip" href="#bb-main"><?php esc_html_e( 'Skip to content', 'bunnybabe' ); ?></a>
 <div class="bb-site">
 
@@ -22,10 +23,9 @@ $bb_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_con
 			<img src="<?php echo esc_url( bb_asset( 'img/logo.png' ) ); ?>" alt="<?php esc_attr_e( 'Bunny Babe', 'bunnybabe' ); ?>" width="580" height="104">
 		</a>
 		<nav class="bb-nav" aria-label="<?php esc_attr_e( 'Main', 'bunnybabe' ); ?>">
-			<a href="<?php echo esc_url( $bb_home . '#videos' ); ?>"><?php esc_html_e( 'Videos', 'bunnybabe' ); ?></a>
-			<a href="<?php echo esc_url( $bb_home . '#scents' ); ?>"><?php esc_html_e( 'Scents', 'bunnybabe' ); ?></a>
-			<a href="<?php echo esc_url( $bb_home . '#bundles' ); ?>"><?php esc_html_e( 'Bundles', 'bunnybabe' ); ?></a>
-			<a href="<?php echo esc_url( $bb_home . '#affiliate' ); ?>"><?php esc_html_e( 'Affiliate', 'bunnybabe' ); ?></a>
+			<a href="<?php echo esc_url( $bb_home . '#bundles' ); ?>"><?php esc_html_e( 'Pakej', 'bunnybabe' ); ?></a>
+			<a href="<?php echo esc_url( $bb_home . '#reviews' ); ?>"><?php esc_html_e( 'Review', 'bunnybabe' ); ?></a>
+			<a href="<?php echo esc_url( $bb_home . '#scents' ); ?>"><?php esc_html_e( 'Scent', 'bunnybabe' ); ?></a>
 			<a href="<?php echo esc_url( bb_track_url() ); ?>"><?php esc_html_e( 'Track order', 'bunnybabe' ); ?></a>
 			<a class="bb-bagbtn" href="<?php echo esc_url( $bb_home . '#bag' ); ?>"<?php echo is_front_page() ? ' data-bb-openbag' : ''; ?>>
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>

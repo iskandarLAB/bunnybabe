@@ -196,6 +196,20 @@ function bb_testimonials() {
 			);
 		}
 	}
+	// No reviews added in WP Admin yet: mix in the written TikTok Shop reviews.
+	if ( ! $posts && function_exists( 'bb_seed_reviews' ) ) {
+		$seed = array();
+		foreach ( bb_seed_reviews() as $r ) {
+			$seed[] = array(
+				'img'   => '',
+				'name'  => $r['name'],
+				'quote' => $r['quote'],
+				'scent' => isset( bb_config()['scents'][ $r['scent'] ] ) ? bb_config()['scents'][ $r['scent'] ]['name'] : '',
+				'stars' => (int) $r['stars'],
+			);
+		}
+		array_splice( $cards, min( 1, count( $cards ) ), 0, $seed );
+	}
 	return $cards;
 }
 

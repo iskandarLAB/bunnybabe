@@ -38,6 +38,8 @@ function bb_config() {
 				'desc'   => 'Warm vanilla bean and tonka with a touch of caramel, over sandalwood, amber and soft musk. Grown-up vanilla, not cake vanilla. The huggable one.',
 				'poster' => 'vanilla-poster.jpg',
 				'bottle' => 'vanilla-bottle.jpg',
+				'family' => 'cosy',
+				'when'   => 'bila-bila masa',
 			),
 			'secret'  => array(
 				'name'   => 'Secret',
@@ -47,6 +49,8 @@ function bb_config() {
 				'desc'   => 'Blood orange and mandarin open into honey, gardenia and orange blossom, then melt into beeswax, patchouli and warm caramel. Made for date nights.',
 				'poster' => 'secret-poster.jpg',
 				'bottle' => 'secret-bottle.jpg',
+				'family' => 'bold',
+				'when'   => 'date night',
 			),
 			'aurelle' => array(
 				'name'   => 'Aurelle',
@@ -56,6 +60,8 @@ function bb_config() {
 				'desc'   => 'Pink pepper and bergamot lift a soft damask rose and peony heart, resting on clean white musk and soft amber. Your everyday clean-girl scent.',
 				'poster' => 'aurelle-poster.jpg',
 				'bottle' => 'aurelle-bottle.jpg',
+				'family' => 'soft',
+				'when'   => 'kelas, office',
 			),
 			'marsh'   => array(
 				'name'   => 'Marsh',
@@ -65,6 +71,8 @@ function bb_config() {
 				'desc'   => 'Sugar and strawberry on top, fluffy marshmallow and whipped cream in the heart, vanilla and white musk underneath. The sweetest in the set.',
 				'poster' => 'marsh-poster.jpg',
 				'bottle' => 'marsh-bottle.jpg',
+				'family' => 'soft',
+				'when'   => 'lepak, photoshoot',
 			),
 			'swift'   => array(
 				'name'   => 'Swift',
@@ -74,6 +82,8 @@ function bb_config() {
 				'desc'   => 'Crisp green apple and pear, a jasmine and peony heart, and a soft base of vanilla cream and musk. Light enough for Malaysian heat.',
 				'poster' => 'swift-poster.jpg',
 				'bottle' => 'swift-bottle.jpg',
+				'family' => 'fresh',
+				'when'   => 'siang, cuaca panas',
 			),
 		),
 	);
@@ -169,4 +179,29 @@ function bb_normalize_phone( $phone ) {
 		$d = '6' . $d;
 	}
 	return $d;
+}
+
+/** Mood filters shown above the scent cards (key => label). */
+function bb_scent_families() {
+	return array(
+		'soft'  => __( 'Soft & sweet', 'bunnybabe' ),
+		'fresh' => __( 'Fresh', 'bunnybabe' ),
+		'cosy'  => __( 'Warm & cosy', 'bunnybabe' ),
+		'bold'  => __( 'Bold', 'bunnybabe' ),
+	);
+}
+
+/**
+ * Written reviews from real TikTok Shop buyers (names masked as TikTok shows them).
+ * Shown in the reviews carousel when no testimonials are added in WP Admin.
+ */
+function bb_seed_reviews() {
+	return array(
+		array(
+			'name'  => 'M**e',
+			'scent' => 'vanilla',
+			'stars' => 0,
+			'quote' => 'Wangi...best ...terbaik... suami pn twgur spe y wangi ni.. pdahal bini dia kat sebelah...',
+		),
+	);
 }

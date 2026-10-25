@@ -16,8 +16,9 @@
 			<div>
 				<strong><?php esc_html_e( 'Help', 'bunnybabe' ); ?></strong>
 				<a href="<?php echo esc_url( bb_track_url() ); ?>"><?php esc_html_e( 'Track order', 'bunnybabe' ); ?></a>
-				<span><?php esc_html_e( 'Shipping RM5 · FREE for 2+ bottles', 'bunnybabe' ); ?></span>
+				<span><?php esc_html_e( 'Pos RM5 · FREE untuk 2+ botol', 'bunnybabe' ); ?></span>
 				<a href="<?php echo esc_url( bb_whatsapp_url() ); ?>"><?php esc_html_e( 'Contact', 'bunnybabe' ); ?></a>
+				<a href="<?php echo esc_url( get_theme_mod( 'bb_affiliate_url', '' ) ? get_theme_mod( 'bb_affiliate_url', '' ) : bb_whatsapp_url() ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Jadi affiliate · 10% komisen', 'bunnybabe' ); ?></a>
 			</div>
 			<div>
 				<strong><?php esc_html_e( 'Policies', 'bunnybabe' ); ?></strong>
@@ -51,8 +52,8 @@ if ( is_front_page() && class_exists( 'WooCommerce' ) && WC()->cart ) :
 			<strong><?php echo esc_html( sprintf( /* translators: %d count */ __( 'Checkout (%d)', 'bunnybabe' ), $bb_cnt ) ); ?></strong>
 			<small><?php echo wp_kses_post( WC()->cart->get_total() ); ?></small>
 		<?php else : ?>
-			<strong><?php esc_html_e( 'Buy now', 'bunnybabe' ); ?></strong>
-			<small><?php esc_html_e( 'RM39 · FREE shipping 2+', 'bunnybabe' ); ?></small>
+			<strong><?php esc_html_e( 'Beli sekarang', 'bunnybabe' ); ?></strong>
+			<small><?php esc_html_e( '2 botol RM59 · FREE pos', 'bunnybabe' ); ?></small>
 		<?php endif; ?>
 	</button>
 </div>

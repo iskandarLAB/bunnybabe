@@ -244,7 +244,7 @@ function bb_render_bag_items() {
 			<?php endif; ?>
 			<div class="bb-bag__meta">
 				<strong><?php echo esc_html( $name ); ?></strong>
-				<span><?php esc_html_e( '30ml Eau de Parfum', 'bunnybabe' ); ?></span>
+				<span><?php esc_html_e( '30ml EDP · RM39 seketul', 'bunnybabe' ); ?></span>
 			</div>
 			<div class="bb-stepper">
 				<button type="button" data-bb-set="<?php echo esc_attr( $pid ); ?>" data-qty="<?php echo esc_attr( $qty - 1 ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s scent */ __( 'Remove one %s', 'bunnybabe' ), $name ) ); ?>">−</button>
