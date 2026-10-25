@@ -8,7 +8,8 @@
 	var lastFocus = null;
 	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	function track(ev, d) { try { if (window.bbTrack) { window.bbTrack(ev, d); } } catch (e) {} }
-	function money(html) { var n = parseFloat(String(html || '').replace(/<[^>]+>/g, '').replace(/[^\d.]/g, '')); return isNaN(n) ? 0 : n; }
+	// Decode entities first: WooCommerce prints "RM" as &#82;&#77;, whose digits would join the number.
+	function money(html) { var n = parseFloat($('<div>').html(String(html || '')).text().replace(/[^\d.]/g, '')); return isNaN(n) ? 0 : n; }
 
 	function post(data) {
 		return $.post(D.ajax, $.extend({ action: 'bb_bag' }, data));
