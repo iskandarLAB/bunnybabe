@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'BB_VERSION', '1.5.0' );
+define( 'BB_VERSION', '1.5.1' );
 define( 'BB_DIR', get_template_directory() );
 
 require BB_DIR . '/inc/config.php';
@@ -52,6 +52,11 @@ add_action(
 					'ajax'     => admin_url( 'admin-ajax.php' ),
 					'hasWoo'   => class_exists( 'WooCommerce' ),
 					'checkout' => '#checkout',
+					'prices'   => array(
+						'unit' => (float) bb_config()['unit'],
+						'duo'  => (float) bb_config()['duo'],
+						'pack' => (float) bb_config()['pack'],
+					),
 				)
 			)
 		);

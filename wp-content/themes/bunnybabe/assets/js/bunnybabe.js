@@ -116,6 +116,10 @@
 	function setQty(q) {
 		ps.qty = Math.max(1, Math.min(20, parseInt(q, 10) || 1));
 		$('[data-bb="ps-qty"]').text(ps.qty);
+		// Show the bundle price for this many bottles (5-packs, then pairs, then singles).
+		var P = D.prices || { unit: 39, duo: 59, pack: 99 }, n = ps.qty;
+		var total = Math.floor(n / 5) * P.pack + Math.floor((n % 5) / 2) * P.duo + ((n % 5) % 2) * P.unit;
+		$('.bb-ps-price').text('RM' + (Math.round(total * 100) / 100));
 	}
 
 	$(document).on('click', '[data-bb-open]', function (e) {
