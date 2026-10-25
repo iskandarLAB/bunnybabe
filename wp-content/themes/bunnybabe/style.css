@@ -3,7 +3,7 @@ Theme Name: Bunny Babe
 Theme URI: https://plum-gerbil-363565.hostingersite.com
 Author: Bunny Babe
 Description: One-page shop + checkout and order tracking for Bunny Babe perfume. Built for WooCommerce with bundle pricing (2 for RM35.50, 5 for RM85.50), free shipping from 2 bottles, first-order and second-order vouchers.
-Version: 1.4.0
+Version: 1.4.1
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: bunnybabe
@@ -560,6 +560,16 @@ body.bb-lock { overflow: hidden; }
 
 /* Checkout: hide empty "Additional information" card (order notes are off) */
 .bb-co-form .woocommerce-additional-fields, .bb-co-form #customer_details .col-2:not(:has(input, select, textarea)) { display: none !important; }
+
+/* Babe Pack countdown */
+.bb-countdown { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; background: var(--bb-black); color: var(--bb-white); border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.bb-countdown::before { content: '⏰'; }
+.bb-countdown strong { color: var(--bb-pink); font-size: 16px; font-variant-numeric: tabular-nums; min-width: 5ch; }
+.bb-plan--hero .bb-countdown { background: var(--bb-pink); color: var(--bb-black); border: 2px solid var(--bb-white); }
+.bb-plan--hero .bb-countdown strong { color: var(--bb-black); }
+.bb-countdown.is-urgent strong { animation: bb-cd-blink 1s steps(2, start) infinite; }
+@keyframes bb-cd-blink { to { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .bb-countdown.is-urgent strong { animation: none; } }
 
 /* Reviews carousel */
 .bb-sechead .bb-revnav { display: flex; flex-direction: row; gap: 8px; align-self: flex-end; }

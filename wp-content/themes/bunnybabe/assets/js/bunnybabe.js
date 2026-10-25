@@ -555,6 +555,29 @@
 		}, 4500);
 	}
 
+	/* ---------- Babe Pack countdown ---------- */
+	// Starts at 9:46 per visit; a refresh keeps counting instead of restarting.
+	function countdown() {
+		var $c = $('[data-bb-countdown]');
+		if (!$c.length) { return; }
+		var KEY = 'bb_cd_end', end = 0;
+		try { end = parseInt(window.sessionStorage.getItem(KEY), 10) || 0; } catch (e) {}
+		if (!end) {
+			end = Date.now() + parseInt($c.attr('data-bb-countdown'), 10) * 1000;
+			try { window.sessionStorage.setItem(KEY, String(end)); } catch (e) {}
+		}
+		var $t = $c.find('[data-bb="cd-time"]');
+		function pad(n) { return (n < 10 ? '0' : '') + n; }
+		function tick() {
+			var s = Math.max(0, Math.round((end - Date.now()) / 1000));
+			if (!s) { $c.prop('hidden', true); clearInterval(timer); return; }
+			$t.text(pad(Math.floor(s / 60)) + ':' + pad(s % 60));
+			$c.prop('hidden', false).toggleClass('is-urgent', s <= 60);
+		}
+		var timer = setInterval(tick, 1000);
+		tick();
+	}
+
 	/* ---------- On load ---------- */
 	$(function () {
 		pickScent($('[data-bb-pick]').first().data('bb-pick'));
@@ -564,6 +587,7 @@
 		restoreDetails();
 		recentPopups();
 		reviewsCarousel();
+		countdown();
 		var h = window.location.hash;
 		if ((h === '#bag' || h === '#checkout') && document.getElementById('bb-bag')) {
 			openSheet('bb-bag');
