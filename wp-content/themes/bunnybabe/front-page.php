@@ -178,6 +178,34 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 	</div>
 </section>
 
+<!-- Feedback -->
+<section class="bb-wrap bb-section bb-stack" id="feedback">
+	<div class="bb-sechead">
+		<div>
+			<span class="bb-eyebrow"><?php esc_html_e( 'Real reviews', 'bunnybabe' ); ?></span>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'What babes say', 'bunnybabe' ); ?></h2>
+		</div>
+		<span class="bb-sticker" style="transform:rotate(-2deg)"><?php esc_html_e( 'swipe for more →', 'bunnybabe' ); ?></span>
+	</div>
+	<div class="bb-reviews">
+		<?php
+		$reviews = array(
+			array( 'review-1', __( 'Five-star review of Swift Babe: lasts 6-7 hours in an air-conditioned office, 4-5 hours outdoors', 'bunnybabe' ) ),
+			array( 'review-2', __( 'Five-star review of Vanilla Babe: long-lasting even with 2-3 sprays, sweet and feminine', 'bunnybabe' ) ),
+			array( 'review-3', __( 'Five-star review of Vanilla Babe: a bit strong at first, then tones down to a sweet woody scent', 'bunnybabe' ) ),
+			array( 'review-4', __( 'Customer review of Vanilla Babe with a photo of their bottle', 'bunnybabe' ) ),
+			array( 'review-5', __( 'Five-star review of Vanilla Babe with a photo of their bottle', 'bunnybabe' ) ),
+		);
+		foreach ( $reviews as $r ) :
+			$src = bb_asset( 'img/reviews/' . $r[0] . '.webp' );
+			?>
+			<a class="bb-review bb-lift" href="<?php echo esc_url( $src ); ?>" target="_blank" rel="noopener">
+				<img src="<?php echo esc_url( $src ); ?>" alt="<?php echo esc_attr( $r[1] ); ?>" width="1254" height="1254" loading="lazy">
+			</a>
+		<?php endforeach; ?>
+	</div>
+</section>
+
 <!-- Voucher -->
 <section class="bb-wrap bb-section" id="voucher">
 	<div class="bb-voucher">
