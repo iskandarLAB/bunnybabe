@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'BB_VERSION', '1.3.3' );
+define( 'BB_VERSION', '1.3.4' );
 define( 'BB_DIR', get_template_directory() );
 
 require BB_DIR . '/inc/config.php';
@@ -168,7 +168,8 @@ add_action(
 		if ( ! $order || $order->get_meta( '_bb_px_sent' ) || ! array_filter( bb_pixel_ids() ) ) {
 			return;
 		}
-		if ( in_array( $order->get_status(), array( 'failed', 'cancelled' ), true ) ) {
+		// Only count real sales: paid, or waiting for a manual check (bank transfer).
+		if ( ! $order->is_paid() && 'on-hold' !== $order->get_status() ) {
 			return;
 		}
 		$order->update_meta_data( '_bb_px_sent', 1 );

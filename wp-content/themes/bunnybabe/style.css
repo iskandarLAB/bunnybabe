@@ -3,7 +3,7 @@ Theme Name: Bunny Babe
 Theme URI: https://plum-gerbil-363565.hostingersite.com
 Author: Bunny Babe
 Description: One-page shop + checkout and order tracking for Bunny Babe perfume. Built for WooCommerce with bundle pricing (2 for RM35.50, 5 for RM85.50), free shipping from 2 bottles, first-order and second-order vouchers.
-Version: 1.3.2
+Version: 1.3.4
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: bunnybabe
@@ -151,7 +151,7 @@ button { cursor: pointer; }
 .bb-card__buy { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 4px; }
 .bb-price { font-family: var(--bb-display); font-size: 32px; line-height: 1; }
 .bb-addbtn { min-height: 48px; padding: 0 20px; font-size: 15px; }
-.bb-addbtn.is-loading { opacity: .7; pointer-events: none; }
+.bb-addbtn.is-loading, .bb-co__place.is-loading { opacity: .7; pointer-events: none; }
 
 /* Mood tiles */
 .bb-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }

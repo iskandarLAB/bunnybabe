@@ -29,7 +29,7 @@ function bb_cart_scent_count() {
 }
 
 /* ------------------------------------------------------------------
- * Bundle pricing: 2 = RM35.50, 5 = RM85.50, mixed scents, best combo.
+ * Bundle pricing: 2 = RM59, 5 = RM99 (see config.php), mixed scents, best combo.
  * Applied as a negative fee "Bundle savings".
  * ------------------------------------------------------------------ */
 add_action(
@@ -57,7 +57,7 @@ add_action(
 );
 
 /* ------------------------------------------------------------------
- * Shipping: flat rate (RM6, set in the Malaysia zone) becomes FREE
+ * Shipping: flat rate (RM5, set in the Malaysia zone) becomes FREE
  * from 2 bottles.
  * ------------------------------------------------------------------ */
 add_filter(

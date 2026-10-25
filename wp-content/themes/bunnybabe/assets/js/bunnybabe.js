@@ -202,8 +202,21 @@
 			openSheet('bb-product');
 		}
 	});
+	// Bag +/−: update the number at once and send the final quantity after a
+	// short pause, so quick taps add up instead of being dropped while busy.
+	var stepTimers = {};
+	function sendSet(pid, q, $btn) {
+		if (busy) { stepTimers[pid] = setTimeout(function () { sendSet(pid, q, $btn); }, 200); return; }
+		act({ op: 'set', product: pid, qty: q }, $btn);
+	}
 	$(document).on('click', '[data-bb-set]', function () {
-		act({ op: 'set', product: $(this).data('bb-set'), qty: $(this).data('qty') }, $(this));
+		var $b = $(this), pid = $b.data('bb-set');
+		var $n = $b.closest('.bb-stepper').find('span');
+		var cur = parseInt($n.text(), 10) || 0;
+		var q = Math.max(0, Math.min(50, cur + ($b.is(':first-child') ? -1 : 1)));
+		$n.text(q);
+		clearTimeout(stepTimers[pid]);
+		stepTimers[pid] = setTimeout(function () { sendSet(pid, q, $b); }, 350);
 	});
 	$(document).on('click', '[data-bb-addall]', function () {
 		act({ op: 'addall' }, $(this)).done(function (r) {
@@ -249,11 +262,24 @@
 	}
 	$(document).on('click', '[data-bb-checkout]', function () { if (!state.empty) { openCheckout(); } });
 	$(document).on('click', '[data-bb-backbag]', function () { closeCheckout(); openSheet('bb-bag'); });
+	// The real #place_order is hidden; show progress on our sticky button so
+	// nobody taps again or leaves while the payment page is being prepared.
+	function placeBusy(on) {
+		$('[data-bb="place"]').toggleClass('is-loading', on).prop('disabled', on)
+			.attr('aria-busy', on ? 'true' : null)
+			.text(on ? 'Processing…' : 'Place order');
+	}
 	$(document).on('click', '[data-bb="place"]', function () {
 		var p = document.getElementById('place_order');
-		if (p) { p.click(); }
+		if (!p || $('form.checkout').is('.processing')) { return; }
+		placeBusy(true);
+		p.click();
+		// Client-side validation can stop the submit without any event; release the button.
+		setTimeout(function () { if (!$('form.checkout').is('.processing')) { placeBusy(false); } }, 400);
 	});
+	$(window).on('pageshow', function () { placeBusy(false); });
 	$(document.body).on('checkout_error', function () {
+		placeBusy(false);
 		var body = document.querySelector('.bb-co__body');
 		if (body) { body.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); }
 	});
@@ -393,7 +419,8 @@
 	$(document.body).on('updated_checkout country_to_state_changed init_checkout', phoneTop);
 
 	/* Saved address (any device): masked preview, real values stay on the server. */
-	var SAVED_ROWS = '#billing_first_name_field, #billing_address_1_field, #billing_postcode_field, #billing_city_field, #billing_state_field';
+	// Email too: with a saved address the receipt goes to the email on that order.
+	var SAVED_ROWS = '#billing_first_name_field, #billing_email_field, #billing_address_1_field, #billing_postcode_field, #billing_city_field, #billing_state_field';
 	var lookedUp = '';
 	function usingSaved() { return $('form.checkout input[name="bb_use_saved"]').length > 0; }
 	function esc(t) { return $('<div>').text(t == null ? '' : String(t)).html(); }
