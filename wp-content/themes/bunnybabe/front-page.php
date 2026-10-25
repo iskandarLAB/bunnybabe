@@ -226,7 +226,7 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 			</form>
 
 			<div class="bb-voucher__form" data-bb="claim-done" hidden>
-				<strong style="font-size:18px"><?php esc_html_e( "Yay, it's yours! It's added to your bag automatically:", 'bunnybabe' ); ?></strong>
+				<strong style="font-size:18px"><?php esc_html_e( "Yay, it's yours! It's added automatically when your bag has 2+ bottles:", 'bunnybabe' ); ?></strong>
 				<div class="bb-voucher__row" style="align-items:center">
 					<span class="bb-code"><?php echo esc_html( strtoupper( $bb['first_coupon'] ) ); ?></span>
 					<button class="bb-btn bb-btn--black" type="button" data-bb="copy" data-code="<?php echo esc_attr( strtoupper( $bb['first_coupon'] ) ); ?>"><?php esc_html_e( 'Copy code', 'bunnybabe' ); ?></button>

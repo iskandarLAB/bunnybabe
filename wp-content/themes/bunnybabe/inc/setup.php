@@ -81,7 +81,7 @@ function bb_setup_page() {
 		<p><?php esc_html_e( 'This creates anything that is missing. It does not delete anything:', 'bunnybabe' ); ?></p>
 		<ul style="list-style:disc;padding-left:20px">
 			<li><?php echo esc_html( sprintf( /* translators: %s price */ __( 'The 5 scents as products (RM%s, with photos) in a "Bunny Babe" category', 'bunnybabe' ), bb_config()['unit'] ) ); ?></li>
-			<li><?php esc_html_e( 'Voucher BUNNY5 — RM5 off, first order, once per customer', 'bunnybabe' ); ?></li>
+			<li><?php esc_html_e( 'Voucher BUNNY5 — RM5 off, first order of 2+ bottles, once per customer', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'A "Home" page set as your front page, and a "Track Order" page', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Switches the WooCommerce Checkout page to the classic checkout (needed for this design); the old content is kept as a backup', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Store: Malaysia only, currency RM', 'bunnybabe' ); ?></li>

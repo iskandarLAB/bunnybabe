@@ -357,6 +357,10 @@ function bb_maybe_apply_pending_coupon() {
 	if ( ! $code || WC()->cart->is_empty() ) {
 		return;
 	}
+	// Claimed BUNNY5 waits until the bag reaches 2 bottles.
+	if ( 0 === strcasecmp( $code, bb_config()['first_coupon'] ) && bb_cart_scent_count() < (int) bb_config()['first_min'] ) {
+		return;
+	}
 	if ( ! WC()->cart->has_discount( $code ) ) {
 		WC()->cart->apply_coupon( $code );
 	}
@@ -513,23 +517,59 @@ function bb_cart_is_test() {
 	return true;
 }
 
-/** Auto-apply RM5 for first orders as soon as something is in the bag. */
-add_action(
-	'woocommerce_add_to_cart',
-	function () {
-		if ( ! WC()->session || ! WC()->cart || WC()->session->get( 'bb_no_auto' ) || WC()->session->get( 'bb_returning' ) || bb_cart_is_test() ) {
-			return;
+/** BUNNY5 needs at least 2 bottles in the bag. */
+add_filter(
+	'woocommerce_coupon_is_valid',
+	function ( $valid, $coupon ) {
+		$min = (int) bb_config()['first_min'];
+		if ( $valid && 0 === strcasecmp( $coupon->get_code(), bb_config()['first_coupon'] ) && bb_cart_scent_count() < $min ) {
+			throw new Exception(
+				sprintf(
+					/* translators: 1: coupon code, 2: bottles */
+					esc_html__( '%1$s is for %2$d+ bottles. Add 1 more scent to get RM5 off ♡', 'bunnybabe' ),
+					esc_html( strtoupper( $coupon->get_code() ) ),
+					(int) $min
+				)
+			);
 		}
-		if ( WC()->customer && bb_customer_has_orders( WC()->customer->get_billing_email(), WC()->customer->get_billing_phone() ) ) {
-			WC()->session->set( 'bb_returning', 1 );
-			return;
-		}
-		if ( ! WC()->cart->get_applied_coupons() ) {
-			bb_quiet_coupon( bb_config()['first_coupon'] );
-		}
+		return $valid;
 	},
-	100
+	10,
+	2
 );
+
+/**
+ * First orders get RM5 off automatically once the bag has 2+ bottles,
+ * and lose it again if the bag drops below that.
+ */
+function bb_auto_first_coupon() {
+	if ( ! WC()->session || ! WC()->cart ) {
+		return;
+	}
+	$first = bb_config()['first_coupon'];
+	if ( WC()->cart->has_discount( $first ) ) {
+		if ( bb_cart_scent_count() < (int) bb_config()['first_min'] ) {
+			bb_quiet_coupon( $first, false );
+		}
+		return;
+	}
+	if ( WC()->cart->is_empty() || WC()->session->get( 'bb_no_auto' ) || WC()->session->get( 'bb_returning' ) || bb_cart_is_test() ) {
+		return;
+	}
+	if ( bb_cart_scent_count() < (int) bb_config()['first_min'] ) {
+		return;
+	}
+	if ( WC()->customer && bb_customer_has_orders( WC()->customer->get_billing_email(), WC()->customer->get_billing_phone() ) ) {
+		WC()->session->set( 'bb_returning', 1 );
+		return;
+	}
+	if ( ! WC()->cart->get_applied_coupons() ) {
+		bb_quiet_coupon( $first );
+	}
+}
+add_action( 'woocommerce_add_to_cart', 'bb_auto_first_coupon', 100 );
+add_action( 'woocommerce_after_cart_item_quantity_update', 'bb_auto_first_coupon', 100 );
+add_action( 'woocommerce_cart_item_removed', 'bb_auto_first_coupon', 100 );
 
 /**
  * Never let a voucher block checkout. Before WooCommerce checks the bag,

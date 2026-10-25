@@ -23,6 +23,7 @@ function bb_config() {
 		// Vouchers.
 		'first_coupon'  => 'bunny5', // First order only.
 		'first_amount'  => 5,
+		'first_min'     => 2,        // BUNNY5 needs at least this many bottles.
 		'next_amount'   => 5,        // Auto-issued for the second order.
 
 		// Product category that counts towards bundles.
