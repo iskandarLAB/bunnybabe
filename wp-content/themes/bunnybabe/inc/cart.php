@@ -358,6 +358,9 @@ function bb_ajax_bag() {
 	if ( function_exists( 'bb_maybe_apply_pending_coupon' ) ) {
 		bb_maybe_apply_pending_coupon();
 	}
+	if ( 'coupon' !== $op && function_exists( 'bb_sync_bag_coupons' ) ) {
+		bb_sync_bag_coupons();
+	}
 
 	wp_send_json_success( bb_bag_state() );
 }

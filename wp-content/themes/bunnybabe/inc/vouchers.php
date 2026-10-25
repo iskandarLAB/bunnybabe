@@ -540,22 +540,56 @@ function bb_cart_is_test() {
 	return true;
 }
 
-/** Auto-apply RM5 for first orders as soon as something is in the bag. */
-add_action(
-	'woocommerce_add_to_cart',
-	function () {
-		if ( ! WC()->session || ! WC()->cart || WC()->session->get( 'bb_no_auto' ) || WC()->session->get( 'bb_returning' ) || bb_cart_is_test() ) {
-			return;
+/** Auto-apply RM5 for first orders once the bag has enough bottles. */
+function bb_auto_first_coupon() {
+	if ( ! WC()->session || ! WC()->cart || WC()->session->get( 'bb_no_auto' ) || WC()->session->get( 'bb_returning' ) || bb_cart_is_test() ) {
+		return;
+	}
+	if ( WC()->customer && bb_customer_has_orders( WC()->customer->get_billing_email(), WC()->customer->get_billing_phone() ) ) {
+		WC()->session->set( 'bb_returning', 1 );
+		return;
+	}
+	if ( ! WC()->cart->get_applied_coupons() && bb_cart_scent_count() >= (int) bb_config()['first_min'] ) {
+		bb_quiet_coupon( bb_config()['first_coupon'] );
+	}
+}
+add_action( 'woocommerce_add_to_cart', 'bb_auto_first_coupon', 100 );
+
+/** Bag changed (+/−, remove): drop vouchers that no longer fit, add BUNNY5 when it now does. */
+function bb_sync_bag_coupons() {
+	if ( ! WC()->cart ) {
+		return;
+	}
+	$discounts = new WC_Discounts( WC()->cart );
+	foreach ( WC()->cart->get_applied_coupons() as $code ) {
+		if ( is_wp_error( $discounts->is_coupon_valid( new WC_Coupon( $code ) ) ) ) {
+			bb_quiet_coupon( $code, false );
 		}
-		if ( WC()->customer && bb_customer_has_orders( WC()->customer->get_billing_email(), WC()->customer->get_billing_phone() ) ) {
-			WC()->session->set( 'bb_returning', 1 );
-			return;
+	}
+	bb_auto_first_coupon();
+}
+
+/** BUNNY5 needs at least 2 bottles in the bag. */
+add_filter(
+	'woocommerce_coupon_is_valid',
+	function ( $valid, $coupon ) {
+		$min = (int) bb_config()['first_min'];
+		if ( $valid && 0 === strcasecmp( $coupon->get_code(), bb_config()['first_coupon'] ) && bb_cart_scent_count() < $min ) {
+			throw new Exception(
+				esc_html(
+					sprintf(
+						/* translators: 1 code, 2 bottles */
+						__( '%1$s works from %2$d bottles. Add one more scent to use it ♡', 'bunnybabe' ),
+						strtoupper( bb_config()['first_coupon'] ),
+						$min
+					)
+				)
+			);
 		}
-		if ( ! WC()->cart->get_applied_coupons() ) {
-			bb_quiet_coupon( bb_config()['first_coupon'] );
-		}
+		return $valid;
 	},
-	100
+	10,
+	2
 );
 
 /**
@@ -759,8 +793,8 @@ function bb_ajax_lookup() {
 			'found'    => true,
 			'name'     => bb_mask( $order->get_billing_first_name() ),
 			'address'  => bb_mask( $order->get_billing_address_1() ),
-			'postcode' => $order->get_billing_postcode(),
-			'city'     => $order->get_billing_city(),
+			'postcode' => substr( (string) $order->get_billing_postcode(), 0, 2 ) . '•••',
+			'city'     => bb_mask( $order->get_billing_city() ),
 			'state'    => $st,
 			'state_name' => isset( $states[ $st ] ) ? $states[ $st ] : $st,
 		)

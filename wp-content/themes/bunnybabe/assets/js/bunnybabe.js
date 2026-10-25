@@ -428,8 +428,7 @@
 		var $f = $('form.checkout');
 		if (!$f.find('input[name="bb_use_saved"]').length) { $f.append('<input type="hidden" name="bb_use_saved" value="1">'); }
 		$(SAVED_ROWS).addClass('bb-hide-saved');
-		fieldEl('billing_postcode').val(d.postcode);
-		fieldEl('billing_city').val(d.city);
+		// Only masked values reach the browser; the server fills in the real address on submit.
 		fieldEl('billing_state').val(d.state).trigger('change');
 		$('#bb-saved').addClass('is-used').find('[data-bb="saved-q"]').text('Shipping to your last address ✓');
 		$('#bb-saved [data-bb="saved-yes"]').prop('hidden', true);
