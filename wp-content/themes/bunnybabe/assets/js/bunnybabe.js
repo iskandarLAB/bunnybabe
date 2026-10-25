@@ -488,6 +488,73 @@
 		});
 	});
 
+	/* ---------- Recent purchase pop-up (real paid orders) ---------- */
+	function ago(ts) {
+		var m = Math.max(1, Math.round((Date.now() / 1000 - ts) / 60));
+		if (m < 60) { return m + (m === 1 ? ' minute ago' : ' minutes ago'); }
+		var h = Math.round(m / 60);
+		if (h < 24) { return h + (h === 1 ? ' hour ago' : ' hours ago'); }
+		var d = Math.round(h / 24);
+		return d + (d === 1 ? ' day ago' : ' days ago');
+	}
+	function recentPopups() {
+		var list = D.recent || [];
+		var $r = $('[data-bb="recent"]');
+		var off = false;
+		try { off = window.sessionStorage.getItem('bb_rp_off') === '1'; } catch (e) {}
+		if (!list.length || !$r.length || off) { return; }
+		var i = 0, shown = 0, timer;
+		function next(delay) { timer = setTimeout(show, delay); }
+		function hide() { $r.removeClass('is-on'); setTimeout(function () { $r.prop('hidden', true); }, 400); }
+		function show() {
+			if (shown >= 5) { return; }
+			// Never cover the bag, product sheet or checkout.
+			if (document.body.classList.contains('bb-lock')) { next(6000); return; }
+			var o = list[i % list.length];
+			i++; shown++;
+			$r.find('.bb-recent__main').attr('data-bb-open', o.scent).removeData('bb-open');
+			$r.find('img').attr('src', o.img);
+			$r.find('strong').text(o.name + (o.city ? ' from ' + o.city : ''));
+			$r.find('.bb-recent__text > span').text('bought ' + o.label + (o.more > 0 ? ' + ' + o.more + ' more' : ''));
+			$r.find('small').text(ago(o.ts) + ' · ✓ Verified purchase');
+			$r.prop('hidden', false);
+			requestAnimationFrame(function () { $r.addClass('is-on'); });
+			setTimeout(hide, 5500);
+			next(18000 + Math.random() * 10000);
+		}
+		$r.on('click', '.bb-recent__main', hide);
+		$r.on('click', '[data-bb="recent-x"]', function () {
+			clearTimeout(timer);
+			hide();
+			try { window.sessionStorage.setItem('bb_rp_off', '1'); } catch (e) {}
+		});
+		next(8000);
+	}
+
+	/* ---------- Reviews carousel ---------- */
+	function reviewsCarousel() {
+		var el = document.querySelector('[data-bb="reviews"]');
+		if (!el) { return; }
+		function step(dir) {
+			var card = el.querySelector('.bb-review');
+			var w = card ? card.getBoundingClientRect().width + 20 : el.clientWidth;
+			var atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8;
+			if (dir > 0 && atEnd) {
+				el.scrollTo({ left: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+			} else {
+				el.scrollBy({ left: dir * w, behavior: reduceMotion ? 'auto' : 'smooth' });
+			}
+		}
+		$(document).on('click', '[data-bb-rev]', function () { paused = true; step(parseInt($(this).attr('data-bb-rev'), 10)); });
+		// Gentle auto-play; stops for good once someone swipes, taps or hovers.
+		var paused = reduceMotion;
+		$(el).on('pointerdown touchstart mouseenter focusin wheel', function () { paused = true; });
+		setInterval(function () {
+			var r = el.getBoundingClientRect();
+			if (!paused && !document.hidden && r.top < window.innerHeight && r.bottom > 0) { step(1); }
+		}, 4500);
+	}
+
 	/* ---------- On load ---------- */
 	$(function () {
 		pickScent($('[data-bb-pick]').first().data('bb-pick'));
@@ -495,6 +562,8 @@
 		fieldEl('billing_phone').attr({ inputmode: 'tel', autocomplete: 'tel' });
 		phoneTop();
 		restoreDetails();
+		recentPopups();
+		reviewsCarousel();
 		var h = window.location.hash;
 		if ((h === '#bag' || h === '#checkout') && document.getElementById('bb-bag')) {
 			openSheet('bb-bag');

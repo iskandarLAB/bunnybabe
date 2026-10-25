@@ -178,6 +178,39 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 	</div>
 </section>
 
+<?php $bb_reviews = function_exists( 'bb_testimonials' ) ? bb_testimonials() : array(); ?>
+<?php if ( $bb_reviews ) : ?>
+<!-- Testimonials -->
+<section class="bb-wrap bb-section bb-stack" id="reviews">
+	<div class="bb-sechead">
+		<div>
+			<span class="bb-eyebrow"><?php esc_html_e( 'Real babes, real reviews', 'bunnybabe' ); ?></span>
+			<h2 class="bb-h2 bb-reveal"><?php esc_html_e( 'They said it, not us ♡', 'bunnybabe' ); ?></h2>
+		</div>
+		<div class="bb-revnav">
+			<button type="button" class="bb-iconbtn" data-bb-rev="-1" aria-label="<?php esc_attr_e( 'Previous review', 'bunnybabe' ); ?>"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+			<button type="button" class="bb-iconbtn" data-bb-rev="1" aria-label="<?php esc_attr_e( 'Next review', 'bunnybabe' ); ?>"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+		</div>
+	</div>
+	<div class="bb-reviews" data-bb="reviews" tabindex="0" aria-label="<?php esc_attr_e( 'Customer reviews', 'bunnybabe' ); ?>">
+		<?php foreach ( $bb_reviews as $i => $r ) : ?>
+			<figure class="bb-review<?php echo $r['quote'] ? '' : ' bb-review--img'; ?>">
+				<?php if ( $r['img'] ) : ?>
+					<img src="<?php echo esc_url( $r['img'] ); ?>" alt="<?php echo esc_attr( $r['quote'] ? $r['name'] : sprintf( /* translators: %d number */ __( 'Bunny Babe customer review %d', 'bunnybabe' ), $i + 1 ) ); ?>" loading="lazy">
+				<?php endif; ?>
+				<?php if ( $r['quote'] ) : ?>
+					<figcaption>
+						<span class="bb-review__stars" aria-label="<?php echo esc_attr( sprintf( /* translators: %d stars */ __( '%d out of 5 stars', 'bunnybabe' ), $r['stars'] ) ); ?>"><?php echo esc_html( str_repeat( '★', $r['stars'] ) ); ?></span>
+						<blockquote>“<?php echo esc_html( $r['quote'] ); ?>”</blockquote>
+						<span class="bb-review__who"><strong><?php echo esc_html( $r['name'] ); ?></strong><?php if ( $r['scent'] ) : ?><span class="bb-chip"><?php echo esc_html( $r['scent'] ); ?></span><?php endif; ?></span>
+					</figcaption>
+				<?php endif; ?>
+			</figure>
+		<?php endforeach; ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <!-- Voucher -->
 <section class="bb-wrap bb-section" id="voucher">
 	<div class="bb-voucher">
