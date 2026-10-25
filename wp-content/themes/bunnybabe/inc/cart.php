@@ -185,6 +185,18 @@ add_filter(
 	20
 );
 
+// "Full name is required." instead of "Billing Full name is a required field."
+add_filter(
+	'woocommerce_checkout_required_field_notice',
+	function ( $notice, $label ) {
+		$label = preg_replace( '/^' . preg_quote( sprintf( _x( 'Billing %s', 'checkout-validation', 'woocommerce' ), '' ), '/' ) . '/', '', wp_strip_all_tags( $label ) );
+		/* translators: %s field name */
+		return sprintf( __( '%s is required.', 'bunnybabe' ), '<strong>' . esc_html( $label ) . '</strong>' );
+	},
+	10,
+	2
+);
+
 // WhatsApp number is always required (vouchers + tracking use it).
 add_filter(
 	'pre_option_woocommerce_checkout_phone_field',
@@ -343,7 +355,10 @@ function bb_ajax_bag() {
 			break;
 
 		case 'coupon':
-			if ( $code ) {
+			if ( $code && $cart->has_discount( $code ) ) {
+				// Often auto-applied already: say so nicely instead of WooCommerce's error.
+				wc_add_notice( sprintf( /* translators: %s voucher code */ __( '%s is already in your bag ✓', 'bunnybabe' ), strtoupper( $code ) ) );
+			} elseif ( $code ) {
 				$cart->apply_coupon( $code );
 			}
 			break;

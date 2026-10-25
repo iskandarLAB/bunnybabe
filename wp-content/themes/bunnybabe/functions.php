@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'BB_VERSION', '1.3.4' );
+define( 'BB_VERSION', '1.3.5' );
 define( 'BB_DIR', get_template_directory() );
 
 require BB_DIR . '/inc/config.php';
@@ -50,7 +50,37 @@ add_action(
 				'checkout' => '#checkout',
 			)
 		);
-	}
+
+		// The one-page shop has no blocks: skip block CSS (~120KB) for a faster first paint.
+		if ( is_front_page() ) {
+			foreach ( array( 'wp-block-library', 'classic-theme-styles', 'global-styles', 'wc-blocks-style' ) as $handle ) {
+				wp_dequeue_style( $handle );
+			}
+		}
+	},
+	100
+);
+
+// WooCommerce registers its own 319KB "Inter" font file, which the browser
+// downloads on top of the Google Fonts Inter this theme already loads.
+remove_action( 'wp_head', 'wp_print_font_faces', 50 );
+remove_action( 'wp_head', 'wp_print_font_faces_from_style_variations', 50 );
+
+// Connect to Google Fonts early so headings don't jump when the font arrives.
+add_filter(
+	'wp_resource_hints',
+	function ( $urls, $type ) {
+		if ( 'preconnect' === $type ) {
+			$urls[] = 'https://fonts.googleapis.com';
+			$urls[] = array(
+				'href'        => 'https://fonts.gstatic.com',
+				'crossorigin' => 'anonymous',
+			);
+		}
+		return $urls;
+	},
+	10,
+	2
 );
 
 /** Favicon from the bunny if no site icon is set. */

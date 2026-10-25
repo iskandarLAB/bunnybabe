@@ -25,6 +25,8 @@
 		$('[data-bb="tier"]').text(s.tier_msg);
 		$('[data-bb="tier-bar"]').css('width', s.tier_pct + '%');
 		$('[data-bb="notices"]').html(s.notices || '');
+		var cps = s.coupons || [];
+		$('[data-bb="coupon-on"]').text(cps.length ? '✓ Voucher applied: ' + cps.join(', ').toUpperCase() : '').prop('hidden', !cps.length);
 		$('[data-bb="bag-empty"]').prop('hidden', !s.empty);
 		$('[data-bb="bag-full"]').prop('hidden', !!s.empty);
 		$('[data-bb-checkout]').prop('disabled', !!s.empty);
@@ -52,8 +54,15 @@
 			$b.attr('data-mode', 'checkout').html('<strong>Checkout (' + s.count + ')</strong><small>' + s.total_html + (s.saving_amt ? ' · saving ' + s.saving_amt : '') + '</small>');
 		}
 
-		// Refresh WooCommerce's order review (totals, shipping, payment).
-		$(document.body).trigger('update_checkout');
+		// Taps the customer made that are still waiting to be sent win over the server's older numbers.
+		$.each(setPending, function (pid, q) {
+			$('[data-bb-set="' + pid + '"]').closest('.bb-stepper').find('span').text(q);
+		});
+
+		// Refresh WooCommerce's order review (totals, shipping, payment) only when it is on screen;
+		// openCheckout() refreshes it on open.
+		var co = document.getElementById('checkout');
+		if (co && !co.hidden) { $(document.body).trigger('update_checkout'); }
 	}
 
 	function act(data, $btn) {
@@ -75,9 +84,25 @@
 	function lock() { document.body.classList.add('bb-lock'); }
 	function unlockIfIdle() { if (!anyOpen()) { document.body.classList.remove('bb-lock'); } }
 
+	// Hide with a short slide-out instead of vanishing in one frame.
+	function stopClosing(el) {
+		clearTimeout(el._bbClose);
+		el.classList.remove('is-closing');
+	}
+	function animateOut(el, done) {
+		if (reduceMotion) { el.hidden = true; done(); return; }
+		el.classList.add('is-closing');
+		el._bbClose = setTimeout(function () {
+			el.classList.remove('is-closing');
+			el.hidden = true;
+			done();
+		}, 220);
+	}
+
 	function openSheet(id) {
 		var el = document.getElementById(id);
 		if (!el) { return; }
+		stopClosing(el);
 		if (el.hidden) { lastFocus = document.activeElement; }
 		el.hidden = false;
 		lock();
@@ -85,13 +110,14 @@
 		if (f) { f.focus({ preventScroll: true }); }
 	}
 	function closeSheet(el) {
-		if (!el || el.hidden) { return; }
-		el.hidden = true;
-		unlockIfIdle();
-		if (!anyOpen() && lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
+		if (!el || el.hidden || el.classList.contains('is-closing')) { return; }
+		animateOut(el, function () {
+			unlockIfIdle();
+			if (!anyOpen() && lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
+		});
 	}
 	function closeAllSheets() {
-		$('.bb-sheet').each(function () { this.hidden = true; });
+		$('.bb-sheet').each(function () { stopClosing(this); this.hidden = true; });
 	}
 
 	$(document).on('click', '[data-bb-close]', function () { closeSheet($(this).closest('.bb-sheet')[0]); });
@@ -202,8 +228,25 @@
 			openSheet('bb-product');
 		}
 	});
+	// Bag +/−: update the number at once, send the final count after the taps stop.
+	var setPending = {}, setTimers = {};
+	function flushSet(pid) {
+		if (busy) { setTimers[pid] = setTimeout(function () { flushSet(pid); }, 150); return; }
+		var q = setPending[pid];
+		delete setPending[pid];
+		act({ op: 'set', product: pid, qty: q });
+	}
 	$(document).on('click', '[data-bb-set]', function () {
-		act({ op: 'set', product: $(this).data('bb-set'), qty: $(this).data('qty') }, $(this));
+		var pid = String($(this).attr('data-bb-set'));
+		var q = Math.max(0, Math.min(50, parseInt($(this).attr('data-qty'), 10) || 0));
+		var $s = $(this).closest('.bb-stepper');
+		$s.find('span').text(q);
+		$s.find('[data-bb-set]').first().attr('data-qty', q - 1);
+		$s.find('[data-bb-set]').last().attr('data-qty', q + 1);
+		$(this).closest('.bb-bag__item').toggleClass('is-removing', q === 0);
+		setPending[pid] = q;
+		clearTimeout(setTimers[pid]);
+		setTimers[pid] = setTimeout(function () { flushSet(pid); }, 350);
 	});
 	$(document).on('click', '[data-bb-addall]', function () {
 		act({ op: 'addall' }, $(this)).done(function (r) {
@@ -217,7 +260,11 @@
 	});
 	$(document).on('click', '[data-bb="apply-coupon"]', function () {
 		var code = $.trim($('#bb-coupon').val());
-		if (code) { act({ op: 'coupon', code: code }, $(this)); }
+		if (code) {
+			act({ op: 'coupon', code: code }, $(this)).done(function (r) {
+				if (r && r.success && $.inArray(code.toLowerCase(), r.data.coupons || []) !== -1) { $('#bb-coupon').val(''); }
+			});
+		}
 	});
 	$(document).on('keydown', '#bb-coupon', function (e) {
 		if (e.key === 'Enter') { e.preventDefault(); $('[data-bb="apply-coupon"]').trigger('click'); }
@@ -229,6 +276,7 @@
 		if (!co) { return; }
 		if (state && state.empty) { openSheet('bb-bag'); return; }
 		closeAllSheets();
+		stopClosing(co);
 		co.hidden = false;
 		lock();
 		track('InitiateCheckout', { value: money(state.total_html), ids: [], qty: state.count || 1 });
@@ -244,8 +292,8 @@
 	}
 	function closeCheckout() {
 		var co = document.getElementById('checkout');
-		if (co) { co.hidden = true; }
-		unlockIfIdle();
+		if (!co || co.hidden || co.classList.contains('is-closing')) { return; }
+		animateOut(co, unlockIfIdle);
 	}
 	$(document).on('click', '[data-bb-checkout]', function () { if (!state.empty) { openCheckout(); } });
 	$(document).on('click', '[data-bb-backbag]', function () { closeCheckout(); openSheet('bb-bag'); });

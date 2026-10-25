@@ -344,6 +344,8 @@ $bb_first = array_key_first( $bb['scents'] );
 						<input class="bb-input" id="bb-coupon" type="text" placeholder="BUNNY5" autocomplete="off">
 						<button type="button" class="bb-btn bb-btn--white" data-bb="apply-coupon"><?php esc_html_e( 'Apply', 'bunnybabe' ); ?></button>
 					</div>
+					<?php $bb_cps = WC()->cart->get_applied_coupons(); ?>
+					<span class="bb-coupon__on" data-bb="coupon-on" <?php echo $bb_cps ? '' : 'hidden'; ?>><?php echo $bb_cps ? esc_html( '✓ Voucher applied: ' . strtoupper( implode( ', ', $bb_cps ) ) ) : ''; ?></span>
 				</div>
 			</div>
 		</div>

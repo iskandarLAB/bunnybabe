@@ -3,7 +3,7 @@ Theme Name: Bunny Babe
 Theme URI: https://plum-gerbil-363565.hostingersite.com
 Author: Bunny Babe
 Description: One-page shop + checkout and order tracking for Bunny Babe perfume. Built for WooCommerce with bundle pricing (2 for RM35.50, 5 for RM85.50), free shipping from 2 bottles, first-order and second-order vouchers.
-Version: 1.3.4
+Version: 1.3.5
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: bunnybabe
@@ -27,7 +27,7 @@ License: Proprietary
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 body { margin: 0; background: var(--bb-ivory); color: var(--bb-black); font-family: var(--bb-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 img, video { max-width: 100%; display: block; }
 a { color: var(--bb-black); }
@@ -253,7 +253,7 @@ button { cursor: pointer; }
 .bb-co-form #place_order:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--bb-black); }
 .bb-co-form .woocommerce-privacy-policy-text { font-size: 13px; color: var(--bb-ink-3); }
 .bb-co-form .woocommerce-error, .bb-co-form .woocommerce-message, .bb-co-form .woocommerce-info, .bb-notices .woocommerce-error, .bb-notices .woocommerce-message, .bb-notices .woocommerce-info { list-style: none; margin: 0 0 12px; padding: 12px 16px; border: 2px solid var(--bb-black); border-radius: 14px; background: var(--bb-pink-soft); font-size: 14px; font-weight: 600; }
-.bb-co-form .woocommerce-error::before, .bb-co-form .woocommerce-message::before, .bb-co-form .woocommerce-info::before { display: none; }
+.bb-co-form .woocommerce-error::before, .bb-co-form .woocommerce-message::before, .bb-co-form .woocommerce-info::before, .bb-notices .woocommerce-error::before, .bb-notices .woocommerce-message::before, .bb-notices .woocommerce-info::before { display: none; }
 .bb-co-form .blockUI.blockOverlay { border-radius: 28px; }
 
 /* ---------- Affiliate ---------- */
@@ -342,7 +342,6 @@ body.bb-lock { overflow: hidden; }
 
 /* Buy bar */
 .bb-buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--bb-white); border-top: 2px solid var(--bb-black); padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 6px; }
-.bb-lock .bb-buybar { display: none; }
 .bb-buybar__icon { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 54px; min-height: 52px; font-size: 11px; font-weight: 700; background: none; border: 0; text-decoration: none; color: var(--bb-black); padding: 2px 4px; border-radius: 12px; }
 .bb-buybar__icon:hover { color: var(--bb-black); background: var(--bb-ivory); }
 .bb-dot { position: absolute; top: 2px; right: 8px; min-width: 20px; height: 20px; border-radius: 999px; background: var(--bb-pink); border: 1.5px solid var(--bb-black); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 5px; line-height: 1; }
@@ -358,6 +357,9 @@ body.bb-lock { overflow: hidden; }
 /* Sheets */
 .bb-sheet { position: fixed; inset: 0; z-index: 90; display: flex; align-items: flex-end; justify-content: center; }
 .bb-sheet[hidden] { display: none; }
+.bb-sheet.is-closing { pointer-events: none; }
+.bb-sheet.is-closing .bb-sheet__backdrop { animation: bbfadeout .22s ease both; }
+.bb-sheet.is-closing .bb-sheet__panel { animation: bbslidedown .22s ease-in both; }
 .bb-sheet__backdrop { position: absolute; inset: 0; background: rgba(17, 17, 17, .5); animation: bbfade .25s ease both; }
 .bb-sheet__panel { position: relative; width: 100%; max-width: 560px; max-height: 88vh; max-height: 88dvh; background: var(--bb-white); border: 2px solid var(--bb-black); border-bottom: 0; border-radius: 28px 28px 0 0; display: flex; flex-direction: column; animation: bbslideup .38s var(--bb-ease) both; }
 .bb-sheet--tall .bb-sheet__panel { height: 88vh; height: 88dvh; }
@@ -376,6 +378,7 @@ body.bb-lock { overflow: hidden; }
 	.bb-sheet { align-items: center; }
 	.bb-sheet__panel { border-radius: 28px; border-bottom: 2px solid var(--bb-black); max-height: 86vh; animation-name: bbpopin; }
 	.bb-sheet--tall .bb-sheet__panel { height: auto; min-height: 60vh; }
+	.bb-sheet.is-closing .bb-sheet__panel { animation-name: bbpopout; }
 }
 
 /* Product sheet */
@@ -403,11 +406,15 @@ body.bb-lock { overflow: hidden; }
 .bb-bagempty { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 32px 8px; }
 .bb-bagempty strong { font-family: var(--bb-display); font-weight: 400; font-size: 36px; line-height: 1; }
 .bb-bagfull { display: flex; flex-direction: column; gap: 16px; }
+.bb-bag__item { transition: opacity .2s ease; }
+.bb-bag__item.is-removing { opacity: .4; }
+.bb-coupon__on { font-size: 13px; font-weight: 700; color: #1a7f45; }
 [data-bb-checkout][disabled] { opacity: .5; pointer-events: none; }
 
 /* Order summary (checkout) */
 .bb-co { position: fixed; inset: 0; z-index: 95; background: var(--bb-ivory); display: flex; flex-direction: column; animation: bbslideup .38s var(--bb-ease) both; }
 .bb-co[hidden] { display: none; }
+.bb-co.is-closing { animation: bbslidedown .22s ease-in both; }
 .bb-co__top { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 2px solid var(--bb-black); background: var(--bb-white); }
 .bb-co__top strong { flex: 1; font-family: var(--bb-display); font-weight: 400; font-size: 30px; line-height: 1; }
 .bb-co__body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 16px; }
@@ -425,6 +432,9 @@ body.bb-lock { overflow: hidden; }
 .bb-toast.is-on { transform: translate(-50%, 0); }
 
 @keyframes bbfade { from { opacity: 0; } }
+@keyframes bbfadeout { to { opacity: 0; } }
+@keyframes bbslidedown { to { transform: translateY(100%); } }
+@keyframes bbpopout { to { opacity: 0; transform: translateY(16px) scale(.98); } }
 @keyframes bbslideup { from { transform: translateY(100%); } }
 @keyframes bbpopin { from { opacity: 0; transform: translateY(24px) scale(.97); } }
 
