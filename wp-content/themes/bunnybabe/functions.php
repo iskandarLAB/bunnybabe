@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'BB_VERSION', '1.4.4' );
+define( 'BB_VERSION', '1.6.0' );
 define( 'BB_DIR', get_template_directory() );
 
 require BB_DIR . '/inc/config.php';
@@ -63,7 +63,8 @@ add_action(
 	'wp_head',
 	function () {
 		if ( ! has_site_icon() ) {
-			echo '<link rel="icon" href="' . esc_url( bb_asset( 'img/logo.png' ) ) . '">' . "\n";
+			echo '<link rel="icon" type="image/svg+xml" href="' . esc_url( bb_asset( 'img/favicon.svg' ) ) . '">' . "\n";
+			echo '<link rel="apple-touch-icon" href="' . esc_url( bb_asset( 'img/logo.png' ) ) . '">' . "\n";
 		}
 	}
 );

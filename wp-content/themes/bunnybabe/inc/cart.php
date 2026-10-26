@@ -338,6 +338,14 @@ function bb_ajax_bag() {
 			}
 			break;
 
+		case 'addmulti':
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- cart action, same as add-to-cart AJAX.
+			$list = isset( $_POST['products'] ) ? sanitize_text_field( wp_unslash( $_POST['products'] ) ) : '';
+			foreach ( array_slice( array_filter( array_map( 'absint', explode( ',', $list ) ) ), 0, 20 ) as $one ) {
+				$cart->add_to_cart( $one, 1 );
+			}
+			break;
+
 		case 'set':
 			$found = false;
 			foreach ( $cart->get_cart() as $key => $item ) {

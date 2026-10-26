@@ -3,7 +3,7 @@ Theme Name: Bunny Babe
 Theme URI: https://plum-gerbil-363565.hostingersite.com
 Author: Bunny Babe
 Description: One-page shop + checkout and order tracking for Bunny Babe perfume. Built for WooCommerce with bundle pricing (2 for RM35.50, 5 for RM85.50), free shipping from 2 bottles, first-order and second-order vouchers.
-Version: 1.4.4
+Version: 1.6.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: bunnybabe
@@ -388,7 +388,12 @@ body.bb-lock { overflow: hidden; }
 .bb-ps-tile span { font-size: 14px; font-weight: 700; padding: 6px 8px 0; }
 .bb-ps-tile small { font-size: 11px; color: var(--bb-ink-3); padding: 0 8px 8px; line-height: 1.3; }
 .bb-ps-tile:hover { transform: translateY(-2px); }
+.bb-ps-tile { position: relative; }
 .bb-ps-tile[aria-pressed="true"] { border-color: var(--bb-black); box-shadow: 0 0 0 3px var(--bb-pink); }
+.bb-ps-tick { position: absolute; top: 8px; right: 8px; z-index: 2; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--bb-black); background: rgba(255,255,255,.92); display: grid; place-items: center; transition: background .15s ease; }
+.bb-ps-tick::after { content: ""; width: 11px; height: 6px; margin-top: -2px; border-left: 2.6px solid var(--bb-black); border-bottom: 2.6px solid var(--bb-black); transform: rotate(-45deg); opacity: 0; }
+.bb-ps-tile[aria-pressed="true"] .bb-ps-tick { background: var(--bb-pink); }
+.bb-ps-tile[aria-pressed="true"] .bb-ps-tick::after { opacity: 1; }
 .bb-ps-row { display: flex; justify-content: space-between; align-items: center; }
 .bb-ps-deal { font-size: 13px; font-weight: 600; background: var(--bb-pink-soft); border: 1.5px dashed var(--bb-black); border-radius: 12px; padding: 10px 12px; }
 
@@ -597,3 +602,12 @@ body.bb-lock { overflow: hidden; }
 .bb-lock .bb-recent { display: none; }
 @media (min-width: 900px) { .bb-recent { left: 20px; bottom: 20px; } }
 @media (prefers-reduced-motion: reduce) { .bb-recent { transition: none; } }
+
+/* Floating WhatsApp button */
+.bb-wa { position: fixed; right: 16px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 58; display: inline-flex; align-items: center; gap: 8px; height: 56px; padding: 0 16px; border-radius: 999px; background: #25D366; color: #fff; border: 2px solid var(--bb-black); box-shadow: 3px 3px 0 var(--bb-black); font-weight: 700; font-size: 15px; text-decoration: none; }
+.bb-wa:hover { color: #fff; transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--bb-black); }
+.bb-wa svg { flex: 0 0 auto; }
+.bb-front .bb-wa { bottom: calc(86px + env(safe-area-inset-bottom)); }
+.bb-lock .bb-wa { display: none; }
+@media (max-width: 480px) { .bb-wa { height: 52px; padding: 0 14px; } .bb-wa__txt { display: none; } }
+@media (min-width: 900px) { .bb-front .bb-wa { bottom: calc(20px + env(safe-area-inset-bottom)); } }

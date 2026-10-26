@@ -79,14 +79,14 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 				<div><div class="bb-plan__name">SOLO</div><div class="bb-plan__sub"><?php esc_html_e( '1 bottle · 30ml', 'bunnybabe' ); ?></div></div>
 				<div class="bb-plan__price"><strong>RM39</strong></div>
 				<ul><li><?php esc_html_e( 'Any one scent', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Perfect first try', 'bunnybabe' ); ?></li><li><?php esc_html_e( '+ RM5 shipping', 'bunnybabe' ); ?></li></ul>
-				<a class="bb-btn bb-btn--white bb-cta" href="#scents" data-bb-open="vanilla" data-qty="1"><span><?php esc_html_e( 'Pick 1 scent', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
+				<a class="bb-btn bb-btn--white bb-cta" href="#scents" data-bb-open="vanilla" data-bb-pre="1"><span><?php esc_html_e( 'Pick 1 scent', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
 			</div>
 			<div class="bb-plan bb-lift bb-reveal">
 				<span class="bb-plan__tag bb-sway2"><?php esc_html_e( 'jimat RM19 ♡', 'bunnybabe' ); ?></span>
 				<div><div class="bb-plan__name">DUO</div><div class="bb-plan__sub"><?php esc_html_e( '2 bottles · 30ml each', 'bunnybabe' ); ?></div></div>
 				<div class="bb-plan__price"><strong>RM59</strong><s>RM78</s></div>
 				<ul><li><?php esc_html_e( 'RM29.50 per bottle', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Save RM19', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'FREE shipping', 'bunnybabe' ); ?></li></ul>
-				<a class="bb-btn bb-btn--black bb-cta bb-cta--pinkshadow" href="#scents" data-bb-open="vanilla" data-qty="2"><span><?php esc_html_e( 'Pick 2 scents', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
+				<a class="bb-btn bb-btn--black bb-cta bb-cta--pinkshadow" href="#scents" data-bb-open="vanilla" data-bb-pre="2"><span><?php esc_html_e( 'Pick 2 scents', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?></a>
 			</div>
 			<div class="bb-plan bb-plan--hero bb-lift bb-reveal">
 				<span class="bb-plan__tag bb-sway2"><?php esc_html_e( 'best value ♡', 'bunnybabe' ); ?></span>
@@ -94,9 +94,9 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 				<div class="bb-countdown" data-bb-countdown="586" role="timer" aria-live="off" hidden><?php esc_html_e( 'Deal ends in', 'bunnybabe' ); ?> <strong data-bb="cd-time">09:46</strong></div>
 				<div class="bb-plan__price"><strong>RM99</strong><s>RM195</s></div>
 				<ul><li><?php esc_html_e( 'RM19.80 per bottle', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Save RM96', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'FREE shipping', 'bunnybabe' ); ?></li><li><?php esc_html_e( 'Collect all 5 scents', 'bunnybabe' ); ?></li><li><?php esc_html_e( '+ FREE mystery tester 5ml', 'bunnybabe' ); ?></li></ul>
-				<button type="button" class="bb-btn bb-btn--pink bb-cta bb-cta--light" data-bb-addall>
+				<button type="button" class="bb-btn bb-btn--pink bb-cta bb-cta--light" data-bb-open="vanilla" data-bb-pre="all">
 					<svg class="bb-spin" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" fill="#fff" stroke="#111" stroke-width="1.4"/></svg>
-					<span><?php esc_html_e( 'Add all 5 scents', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?>
+					<span><?php esc_html_e( 'Pick all 5 scents', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore ?>
 				</button>
 			</div>
 		</div>
@@ -278,7 +278,7 @@ $bb_first = array_key_first( $bb['scents'] );
 				</div>
 			</div>
 
-			<div class="bb-ps-label"><?php echo esc_html( sprintf( /* translators: %d count */ __( 'Scent (%d)', 'bunnybabe' ), count( $bb['scents'] ) ) ); ?></div>
+			<div class="bb-ps-label"><?php esc_html_e( 'Tap the scents you want', 'bunnybabe' ); ?> <strong data-bb="ps-count"></strong></div>
 			<div class="bb-ps-grid">
 				<?php foreach ( $bb['scents'] as $key => $s ) : ?>
 					<button type="button" class="bb-ps-tile" aria-pressed="false"
@@ -287,27 +287,19 @@ $bb_first = array_key_first( $bb['scents'] );
 						data-img="<?php echo esc_url( bb_asset( 'img/' . $s['bottle'] ) ); ?>"
 						data-name="<?php echo esc_attr( $s['name'] ); ?>"
 						data-mood="<?php echo esc_attr( $s['mood'] ); ?>">
+						<span class="bb-ps-tick" aria-hidden="true"></span>
 						<img src="<?php echo esc_url( bb_asset( 'img/' . $s['poster'] ) ); ?>" alt="" width="160" height="160" loading="lazy">
 						<span><?php echo esc_html( $s['name'] ); ?></span>
 						<small><?php echo esc_html( $s['mood'] ); ?></small>
 					</button>
 				<?php endforeach; ?>
 			</div>
-
-			<div class="bb-ps-row">
-				<span class="bb-label"><?php esc_html_e( 'Quantity', 'bunnybabe' ); ?></span>
-				<div class="bb-stepper">
-					<button type="button" data-bb="ps-minus" aria-label="<?php esc_attr_e( 'Less', 'bunnybabe' ); ?>">−</button>
-					<span data-bb="ps-qty">1</span>
-					<button type="button" data-bb="ps-plus" aria-label="<?php esc_attr_e( 'More', 'bunnybabe' ); ?>">+</button>
-				</div>
-			</div>
-			<div class="bb-ps-deal"><?php esc_html_e( 'Mix any scents: 2 for RM59 · 5 for RM99 + mystery tester. Applied automatically in your bag.', 'bunnybabe' ); ?></div>
+			<div class="bb-ps-deal"><?php esc_html_e( 'Mix any scents: 2 for RM59 · 5 for RM99 + mystery tester. Applied automatically in your bag. Want 2 of the same? Add it, then tap + in your bag.', 'bunnybabe' ); ?></div>
 		</div>
 		<div class="bb-sheet__foot">
 			<button type="button" class="bb-btn bb-btn--white" data-bb="ps-add" data-bb-focus>
 				<svg class="bb-wiggle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
-				<span><?php esc_html_e( 'Add to bag', 'bunnybabe' ); ?></span>
+				<span data-bb="ps-add-lbl"><?php esc_html_e( 'Add to bag', 'bunnybabe' ); ?></span>
 			</button>
 			<button type="button" class="bb-btn bb-btn--pink bb-cta" data-bb="ps-buy"><?php esc_html_e( 'Buy now', 'bunnybabe' ); ?></button>
 		</div>

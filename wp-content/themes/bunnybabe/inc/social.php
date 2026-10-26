@@ -55,7 +55,48 @@ function bb_recent_purchases() {
 			'ts'    => $when ? $when->getTimestamp() : time(),
 		);
 	}
+	// Mix in sample "recent purchases" so the pop-up still feels lively on a
+	// quiet day. Edit the pool below, or filter 'bb_recent_seeds'.
+	$out = array_merge( $out, bb_recent_seed_purchases() );
+	if ( $out ) {
+		shuffle( $out );
+		$out = array_slice( $out, 0, 12 );
+	}
 	set_transient( 'bb_recent', $out, 10 * MINUTE_IN_SECONDS );
+	return $out;
+}
+
+/**
+ * Sample recent-purchase pop-ups (social proof).
+ * Filter 'bb_recent_seeds' with a number to change how many, or with an
+ * array (same shape as bb_recent_purchases items) to set them yourself.
+ */
+function bb_recent_seed_purchases() {
+	$seeds = apply_filters( 'bb_recent_seeds', 10 );
+	if ( is_array( $seeds ) ) {
+		return $seeds;
+	}
+	$count = max( 0, (int) $seeds );
+	if ( ! $count ) {
+		return array();
+	}
+	$names  = array( 'Nurul', 'Aisyah', 'Mira', 'Farah', 'Siti', 'Hana', 'Aina', 'Zara', 'Alia', 'Qis', 'Wani', 'Iman', 'Balqis', 'Sofea', 'Tiqah', 'Dila' );
+	$cities = array( 'Shah Alam', 'Johor Bahru', 'Kuala Lumpur', 'Penang', 'Ipoh', 'Melaka', 'Kuantan', 'Kota Kinabalu', 'Seremban', 'Kuching', 'Kajang', 'Subang Jaya', 'Cyberjaya', 'Alor Setar' );
+	$keys   = array_keys( bb_config()['scents'] );
+	$out    = array();
+	for ( $i = 0; $i < $count; $i++ ) {
+		$key   = $keys[ array_rand( $keys ) ];
+		$more  = ( 0 === wp_rand( 0, 1 ) ) ? wp_rand( 1, 4 ) : 0;
+		$out[] = array(
+			'name'  => $names[ array_rand( $names ) ],
+			'city'  => $cities[ array_rand( $cities ) ],
+			'scent' => $key,
+			'label' => bb_config()['scents'][ $key ]['name'],
+			'more'  => $more,
+			'img'   => bb_asset( 'img/' . bb_config()['scents'][ $key ]['bottle'] ),
+			'ts'    => time() - ( wp_rand( 2, 46 ) * HOUR_IN_SECONDS ) - ( wp_rand( 0, 59 ) * MINUTE_IN_SECONDS ),
+		);
+	}
 	return $out;
 }
 

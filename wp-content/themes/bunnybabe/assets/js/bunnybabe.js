@@ -4,7 +4,7 @@
 	var D = window.bbData || {};
 	var busy = false;
 	var state = { empty: !document.body.classList.contains('bb-has-bag') };
-	var ps = { key: null, qty: 1 };
+	var ps = { sel: [], last: null };
 	var lastFocus = null;
 	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	function track(ev, d) { try { if (window.bbTrack) { window.bbTrack(ev, d); } } catch (e) {} }
@@ -104,49 +104,79 @@
 		if (open) { closeSheet(open); }
 	});
 
-	/* ---------- Product sheet ---------- */
-	function pickScent(key) {
-		var $t = $('[data-bb-pick="' + key + '"]');
-		if (!$t.length) { $t = $('[data-bb-pick]').first(); }
-		ps.key = $t.data('bb-pick');
-		$('[data-bb-pick]').attr('aria-pressed', 'false');
-		$t.attr('aria-pressed', 'true');
-		$('[data-bb="ps-img"]').attr('src', $t.data('img')).attr('alt', 'Bunny Babe ' + $t.data('name'));
-		$('[data-bb="ps-name"]').text($t.data('name') + ' · ' + $t.data('mood'));
+	/* ---------- Product sheet (tick the scents, then add) ---------- */
+	var scentKeys = null;
+	function keys() {
+		if (!scentKeys) { scentKeys = $('[data-bb-pick]').map(function () { return String($(this).data('bb-pick')); }).get(); }
+		return scentKeys;
 	}
-	function setQty(q) {
-		ps.qty = Math.max(1, Math.min(20, parseInt(q, 10) || 1));
-		$('[data-bb="ps-qty"]').text(ps.qty);
+	function tileFor(k) { return $('[data-bb-pick="' + k + '"]'); }
+	function pidOf(k) { return tileFor(k).data('pid'); }
+
+	function renderSheet() {
+		var n = ps.sel.length;
+		$('[data-bb-pick]').each(function () {
+			$(this).attr('aria-pressed', ps.sel.indexOf(String($(this).data('bb-pick'))) > -1 ? 'true' : 'false');
+		});
+		var showKey = ps.last || ps.sel[0] || keys()[0];
+		var $t = tileFor(showKey);
+		if ($t.length) { $('[data-bb="ps-img"]').attr('src', $t.data('img')).attr('alt', 'Bunny Babe ' + $t.data('name')); }
+		var names = ps.sel.map(function (k) { return tileFor(k).data('name'); });
+		var summary = n === 0
+			? 'Tap the scents you want'
+			: ( n === 1 ? names[0] + ' · ' + tileFor(ps.sel[0]).data('mood') : names.join(', ') );
+		$('[data-bb="ps-name"]').text(summary);
+		$('[data-bb="ps-count"]').text(n ? '· ' + n + ' selected' : '');
+		$('[data-bb="ps-add-lbl"]').text(n > 1 ? 'Add ' + n + ' to bag' : 'Add to bag');
+		$('[data-bb="ps-add"], [data-bb="ps-buy"]').prop('disabled', n === 0);
+	}
+
+	function toggleScent(key) {
+		key = String(key);
+		var i = ps.sel.indexOf(key);
+		if (i > -1) { ps.sel.splice(i, 1); } else { ps.sel.push(key); ps.last = key; }
+		renderSheet();
+	}
+
+	// Open the picker with a preset selection: "all", a count ("1","2"), or a single key.
+	function openPicker(pre, openKey) {
+		ps.sel = [];
+		if (pre === 'all') {
+			ps.sel = keys().slice();
+		} else if (pre && /^\d+$/.test(String(pre))) {
+			ps.sel = keys().slice(0, parseInt(pre, 10));
+		} else if (openKey && keys().indexOf(String(openKey)) > -1) {
+			ps.sel = [String(openKey)];
+		}
+		ps.last = ps.sel[ps.sel.length - 1] || keys()[0];
+		closeAllSheets();
+		renderSheet();
+		openSheet('bb-product');
+		track('ViewContent', { value: 39, ids: ps.sel.map(function (k) { return String(pidOf(k)); }), qty: ps.sel.length || 1 });
 	}
 
 	$(document).on('click', '[data-bb-open]', function (e) {
 		e.preventDefault();
-		closeAllSheets();
-		pickScent($(this).data('bb-open') || ps.key);
-		setQty($(this).data('qty') || 1);
-		openSheet('bb-product');
-		track('ViewContent', { value: 39, ids: [String($('[data-bb-pick="' + ps.key + '"]').data('pid'))], qty: 1 });
+		openPicker($(this).attr('data-bb-pre'), $(this).data('bb-open'));
 	});
-	$(document).on('click', '[data-bb-pick]', function () { pickScent($(this).data('bb-pick')); });
-	$(document).on('click', '[data-bb="ps-minus"]', function () { setQty(ps.qty - 1); });
-	$(document).on('click', '[data-bb="ps-plus"]', function () { setQty(ps.qty + 1); });
+	$(document).on('click', '[data-bb-pick]', function () { toggleScent($(this).data('bb-pick')); });
 
 	function addFromSheet(buyNow) {
-		var $t = $('[data-bb-pick="' + ps.key + '"]');
-		var pid = $t.data('pid');
-		if (!pid) { toast('This scent is not available yet.'); return; }
+		var pids = ps.sel.map(pidOf).filter(Boolean);
+		if (!pids.length) { toast('Pick at least one scent.'); return; }
+		var count = pids.length;
 		var img = document.querySelector('[data-bb="ps-img"]');
+		var rect = img ? img.getBoundingClientRect() : null;
 		var $btns = $('[data-bb="ps-add"], [data-bb="ps-buy"]');
-		act({ op: 'add', product: pid, qty: ps.qty }, $btns).done(function (r) {
+		act({ op: 'addmulti', products: pids.join(',') }, $btns).done(function (r) {
 			if (!r || !r.success) { return; }
-			track('AddToCart', { value: Math.round(39 * ps.qty * 100) / 100, ids: [String(pid)], qty: ps.qty });
-			var rect = img ? img.getBoundingClientRect() : null;
+			track('AddToCart', { value: Math.round(39 * count * 100) / 100, ids: pids.map(String), qty: count });
 			closeSheet(document.getElementById('bb-product'));
 			if (buyNow) {
 				openCheckout();
 			} else {
 				fly(img, rect);
-				toast('Added to bag ✓' + (r.data.saving_amt ? ' · saving ' + r.data.saving_amt : ''));
+				toast((count > 1 ? count + ' scents added ✓' : 'Added to bag ✓') + (r.data.saving_amt ? ' · saving ' + r.data.saving_amt : ''));
 			}
 		});
 	}
@@ -198,9 +228,7 @@
 		if ($(this).attr('data-mode') === 'checkout') {
 			openCheckout();
 		} else {
-			pickScent(ps.key);
-			setQty(1);
-			openSheet('bb-product');
+			openPicker('1');
 		}
 	});
 	// Bag +/−: update the number at once and send the final quantity after a
@@ -581,7 +609,7 @@
 
 	/* ---------- On load ---------- */
 	$(function () {
-		pickScent($('[data-bb-pick]').first().data('bb-pick'));
+		renderSheet();
 		fieldEl('billing_postcode').attr({ inputmode: 'numeric', maxlength: 5, autocomplete: 'postal-code' });
 		fieldEl('billing_phone').attr({ inputmode: 'tel', autocomplete: 'tel' });
 		phoneTop();
