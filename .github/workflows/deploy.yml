@@ -1,0 +1,59 @@
+name: Deploy theme to Hostinger
+
+# Auto-deploy the Bunny Babe theme to bunnybabe.my over FTP on every push.
+# One-time setup: add 4 repository secrets (see DEPLOY.md). Until they are set,
+# this workflow runs green and just prints a reminder — it never fails the push.
+
+on:
+  push:
+    branches:
+      - main
+      - claude/affectionate-ptolemy-xih3ys
+    paths:
+      - 'wp-content/themes/bunnybabe/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check FTP secrets are set
+        id: cfg
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -n "$FTP_SERVER" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Deploy skipped — add FTP_SERVER, FTP_USERNAME, FTP_PASSWORD and FTP_THEME_PATH in Settings → Secrets and variables → Actions. See DEPLOY.md."
+          fi
+
+      - name: Deploy theme over FTP
+        if: steps.cfg.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./wp-content/themes/bunnybabe/
+          server-dir: ${{ secrets.FTP_THEME_PATH }}
+          # Only touch the theme folder; keep FTP's own sync-state and any VCS files out.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store
+
+      - name: Done
+        if: steps.cfg.outputs.ready == 'true'
+        run: echo "Deployed wp-content/themes/bunnybabe to Hostinger. Remember to purge your cache if you use one."
