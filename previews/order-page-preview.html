@@ -1,0 +1,153 @@
+<title>Bunny Babe Order</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: ad-landing — centered picker grid + sticky order bar, brand = hot pink on white with 2px ink borders */
+:root{
+  --bg:#FFF4FA; --card:#FFFFFF; --ink:#111111;
+  --muted:#71636b; --pink:#FF5CB8; --line:#111111;
+  --wa:#25D366; --chip:#f3e7ef;
+  --display:"Bebas Neue",Impact,sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --marker:"Permanent Marker",var(--body);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17121a; --card:#221a26; --ink:#f7eef4; --muted:#b39eb0;
+  --pink:#FF5CB8; --line:#3a2f3f; --chip:#2e2432; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#17121a; --card:#221a26; --ink:#f7eef4; --muted:#b39eb0;
+  --pink:#FF5CB8; --line:#3a2f3f; --chip:#2e2432; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.note{background:var(--chip);border:2px dashed var(--line);border-radius:14px;padding:12px 14px;margin:16px auto 0;font-size:13.5px;font-weight:600}
+.note b{font-weight:800}
+.head{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding-block:26px 14px}
+.sticker{font-family:var(--marker);background:var(--pink);color:#fff;border:2px solid var(--line);border-radius:999px;padding:5px 14px;transform:rotate(-2deg);font-size:15px}
+h1{font-family:var(--display);font-weight:400;letter-spacing:.01em;font-size:clamp(34px,7vw,56px);line-height:.98;margin:6px 0 2px;text-wrap:balance}
+.lead{max-width:560px;color:var(--muted);font-size:15.5px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding-block:8px}
+.card{border:2px solid var(--line);border-radius:18px;background:var(--card);padding:10px;display:flex;flex-direction:column;gap:8px;transition:transform .15s,box-shadow .15s}
+.card.on{box-shadow:6px 6px 0 var(--pink);transform:translateY(-2px)}
+.card img{width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;border-radius:12px;display:block}
+.info{display:flex;flex-direction:column;gap:1px}
+.info strong{font-size:17px}
+.info small{color:var(--muted)}
+.sku{font-size:11px;letter-spacing:.05em;color:var(--muted);font-weight:800;text-transform:uppercase}
+.step{display:flex;align-items:center;justify-content:space-between;border:2px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+.step button{border:0;background:transparent;color:var(--ink);font-size:20px;font-weight:700;width:42px;height:40px;cursor:pointer;line-height:1}
+.step button:focus-visible{outline:3px solid var(--pink);outline-offset:-3px}
+.step span{font-weight:800;font-variant-numeric:tabular-nums}
+.paytags{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding-block:18px 120px;font-weight:600}
+.paytag{border:2px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;background:var(--card)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:2px solid var(--line);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:12px;align-items:center;justify-content:space-between;box-shadow:0 -6px 24px rgba(0,0,0,.10)}
+.sum{display:flex;flex-direction:column;line-height:1.1}
+.sum strong{font-family:var(--display);font-size:30px;font-weight:400}
+.sum small{color:var(--muted);font-weight:600}
+.btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:2px solid var(--line);border-radius:999px;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;color:var(--ink);background:var(--card)}
+.btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.btn-wa{background:var(--wa);color:#fff;border-color:var(--line)}
+.btn-pink{background:var(--pink);color:#fff}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+@media(max-width:560px){.bar{flex-wrap:wrap}.btns{flex:1 1 100%}.btns .btn{flex:1;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="note">👀 <b>Preview</b> — ini rupa &amp; flow page <b>/order</b>. Butang <b>Order on WhatsApp</b> betul-betul buka chat ke <b>011&#8209;6842&#8203;008</b> (60176842008). QR cuma contoh, dan <b>Pay now</b> (checkout QR/CHIP) hanya jalan bila theme dipasang di bunnybabe.my.</div>
+
+  <div class="head">
+    <span class="sticker">order on whatsapp ♡</span>
+    <h1>Pick your scents,<br>we chat on WhatsApp</h1>
+    <p class="lead">Choose any scents and quantity below. Order on WhatsApp or pay by DuitNow QR / CHIP. 30ml EDP · RM39 each · FREE shipping from 2 bottles.</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="paytags">
+    <span>Pay by:</span>
+    <span class="paytag">DuitNow QR</span>
+    <span class="paytag">CHIP (FPX / card / e-wallet)</span>
+  </div>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <div class="sum">
+    <strong id="total">RM0</strong>
+    <small id="count">No bottles yet</small>
+  </div>
+  <div class="btns">
+    <a class="btn btn-wa" id="wa" href="#" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.2-4.4A9 9 0 1 1 21 12z"/></svg>
+      <span>Order on WhatsApp</span>
+    </a>
+    <button class="btn btn-pink" id="pay" type="button">Pay now</button>
+  </div>
+</div>
+<div id="paymsg" class="note" role="status" hidden style="position:fixed;left:16px;right:16px;bottom:84px;z-index:30;max-width:560px;margin:0 auto;text-align:center"></div>
+
+<script>
+(function(){
+  var WA="60176842008", UNIT=39, DUO=59, PACK=99, SHIP=5, FREE_MIN=2;
+  var SCENTS=[
+    {name:"Vanilla", sku:"BB-VANILLA", mood:"Warm, cozy & huggable", img:"img/vanilla-poster.jpg"},
+    {name:"Secret",  sku:"BB-SECRET",  mood:"Bold, sweet & a bit naughty", img:"img/secret-poster.jpg"},
+    {name:"Aurelle", sku:"BB-AURELLE", mood:"Soft, clean & feminine", img:"img/aurelle-poster.jpg"},
+    {name:"Marsh",   sku:"BB-MARSH",   mood:"Super sweet & manja", img:"img/marsh-poster.jpg"},
+    {name:"Swift",   sku:"BB-SWIFT",   mood:"Fresh, juicy & playful", img:"img/swift-poster.jpg"}
+  ];
+  var qtys={};
+  function money(n){return "RM"+(Math.round(n*100)/100).toFixed(2).replace(/\.00$/,"");}
+  function bundle(n){var p=Math.floor(n/5),r=n%5,d=Math.floor(r/2),s=r%2;return p*PACK+d*DUO+s*UNIT;}
+
+  var grid=document.getElementById("grid");
+  SCENTS.forEach(function(s){
+    var c=document.createElement("article"); c.className="card";
+    c.innerHTML=
+      '<img src="'+s.img+'" alt="Bunny Babe '+s.name+'" width="400" height="596" loading="lazy">'+
+      '<div class="info"><strong>'+s.name+'</strong><small>'+s.mood+'</small><span class="sku">'+s.sku+'</span></div>'+
+      '<div class="step"><button type="button" aria-label="Less '+s.name+'">−</button><span>0</span><button type="button" aria-label="More '+s.name+'">+</button></div>';
+    var btns=c.querySelectorAll("button"), span=c.querySelector(".step span");
+    btns[0].addEventListener("click",function(){qtys[s.sku]=Math.max(0,(qtys[s.sku]||0)-1);render();});
+    btns[1].addEventListener("click",function(){qtys[s.sku]=Math.min(50,(qtys[s.sku]||0)+1);render();});
+    c._span=span; c._sku=s.sku; c._name=s.name;
+    grid.appendChild(c);
+  });
+
+  var bar=document.getElementById("bar"), elTotal=document.getElementById("total"),
+      elCount=document.getElementById("count"), wa=document.getElementById("wa");
+
+  function waMsg(items,n,total){
+    var L=["Hi Bunny Babe! Nak order:"];
+    items.forEach(function(x){L.push("• "+x.qty+"× "+x.name+" ("+x.sku+")");});
+    L.push("");
+    L.push("Total: "+money(total)+(n>=FREE_MIN?" (FREE shipping)":" + RM"+SHIP+" shipping"));
+    L.push("Bayar guna: DuitNow QR / CHIP?");
+    return L.join("\n");
+  }
+  function render(){
+    var items=[],n=0;
+    Array.prototype.forEach.call(grid.children,function(c){
+      var q=qtys[c._sku]||0; c._span.textContent=q; c.classList.toggle("on",q>0);
+      if(q>0){items.push({name:c._name,sku:c._sku,qty:q}); n+=q;}
+    });
+    var total=bundle(n);
+    bar.hidden=n===0;
+    elTotal.textContent=money(total);
+    elCount.textContent=n===0?"No bottles yet":n+(n===1?" bottle":" bottles")+(n>=FREE_MIN?" · FREE shipping":"");
+    wa.href="https://wa.me/"+WA+"?text="+encodeURIComponent(waMsg(items,n,total));
+  }
+  var payMsg=document.getElementById("paymsg"), payTimer;
+  document.getElementById("pay").addEventListener("click",function(){
+    payMsg.textContent="Di laman sebenar, ini bawa customer ke checkout untuk bayar guna DuitNow QR atau CHIP.";
+    payMsg.hidden=false;
+    clearTimeout(payTimer);
+    payTimer=setTimeout(function(){payMsg.hidden=true;},4000);
+  });
+  render();
+})();
+</script>
