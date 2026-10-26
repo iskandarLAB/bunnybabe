@@ -146,10 +146,36 @@ function bb_tier_percent( $n ) {
 	return 0 === $rest ? 100 : $rest * 20;
 }
 
+/** Digits of the store WhatsApp number (country code, no +). */
+function bb_whatsapp_number() {
+	return preg_replace( '/\D/', '', (string) get_theme_mod( 'bb_whatsapp', '60176842008' ) );
+}
+
 /** WhatsApp link from the Customizer number. */
 function bb_whatsapp_url() {
-	$num = preg_replace( '/\D/', '', (string) get_theme_mod( 'bb_whatsapp', '60176842008' ) );
+	$num = bb_whatsapp_number();
 	return $num ? 'https://wa.me/' . $num : '#';
+}
+
+/** WhatsApp link with a pre-filled chat message (used by the ad → WhatsApp flow). */
+function bb_whatsapp_order_url( $text = '' ) {
+	$num = bb_whatsapp_number();
+	$url = $num ? 'https://wa.me/' . $num : 'https://wa.me/';
+	if ( '' !== (string) $text ) {
+		$url .= '?text=' . rawurlencode( $text );
+	}
+	return $url;
+}
+
+/** DuitNow QR image URL from the Customizer (empty string if not uploaded). */
+function bb_qr_image_url() {
+	return esc_url( (string) get_theme_mod( 'bb_qr_image', '' ) );
+}
+
+/** WhatsApp quick-order page URL. */
+function bb_order_url() {
+	$page = get_page_by_path( 'order' );
+	return $page ? get_permalink( $page ) : home_url( '/order/' );
 }
 
 /** Track order page URL. */

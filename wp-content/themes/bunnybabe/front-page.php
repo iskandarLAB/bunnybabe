@@ -176,6 +176,11 @@ $aff_url    = get_theme_mod( 'bb_affiliate_url', '' );
 			</div>
 		<?php endforeach; ?>
 	</div>
+	<div class="bb-center" style="margin-top:22px">
+		<a class="bb-btn bb-btn--pink bb-cta" href="<?php echo esc_url( bb_order_url() ); ?>">
+			<span><?php esc_html_e( 'Order on WhatsApp', 'bunnybabe' ); ?></span><?php echo $icon_arrow; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
+		</a>
+	</div>
 </section>
 
 <!-- Voucher -->

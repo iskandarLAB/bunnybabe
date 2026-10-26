@@ -12,6 +12,7 @@
 				<strong><?php esc_html_e( 'Shop', 'bunnybabe' ); ?></strong>
 				<a href="<?php echo esc_url( home_url( '/#scents' ) ); ?>"><?php esc_html_e( 'All scents', 'bunnybabe' ); ?></a>
 				<a href="<?php echo esc_url( home_url( '/#bundles' ) ); ?>"><?php esc_html_e( 'Bundles', 'bunnybabe' ); ?></a>
+				<a href="<?php echo esc_url( bb_order_url() ); ?>"><?php esc_html_e( 'Order on WhatsApp', 'bunnybabe' ); ?></a>
 			</div>
 			<div>
 				<strong><?php esc_html_e( 'Help', 'bunnybabe' ); ?></strong>

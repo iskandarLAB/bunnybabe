@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'BB_VERSION', '1.3.3' );
+define( 'BB_VERSION', '1.4.0' );
 define( 'BB_DIR', get_template_directory() );
 
 require BB_DIR . '/inc/config.php';
@@ -15,6 +15,7 @@ if ( class_exists( 'WooCommerce' ) ) {
 	require BB_DIR . '/inc/cart.php';
 	require BB_DIR . '/inc/vouchers.php';
 	require BB_DIR . '/inc/tracking.php';
+	require BB_DIR . '/inc/payments.php';
 } else {
 	add_action(
 		'admin_notices',

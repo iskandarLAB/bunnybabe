@@ -41,6 +41,13 @@ add_action(
 				'type'    => 'text',
 				'clean'   => 'sanitize_text_field',
 			),
+			'bb_qr_name'       => array(
+				'label'       => __( 'DuitNow QR — payee name', 'bunnybabe' ),
+				'description' => __( 'The name shown next to your QR (e.g. your business or bank account name).', 'bunnybabe' ),
+				'default'     => '',
+				'type'        => 'text',
+				'clean'       => 'sanitize_text_field',
+			),
 		);
 
 		foreach ( $fields as $id => $f ) {
@@ -61,5 +68,26 @@ add_action(
 				)
 			);
 		}
+
+		// DuitNow QR image (shown at checkout and on the thank-you page when the
+		// customer pays by QR, and on the WhatsApp order page).
+		$wp_customize->add_setting(
+			'bb_qr_image',
+			array(
+				'default'           => '',
+				'sanitize_callback' => 'esc_url_raw',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Image_Control(
+				$wp_customize,
+				'bb_qr_image',
+				array(
+					'label'       => __( 'DuitNow QR image', 'bunnybabe' ),
+					'description' => __( 'Upload your DuitNow / bank QR. Customers scan it to pay when they pick "DuitNow QR".', 'bunnybabe' ),
+					'section'     => 'bb_settings',
+				)
+			)
+		);
 	}
 );

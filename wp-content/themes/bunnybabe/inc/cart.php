@@ -328,6 +328,28 @@ function bb_ajax_bag() {
 			}
 			break;
 
+		case 'addmulti':
+			// Set the bag to exactly the chosen scents (used by the WhatsApp order page).
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- cart action, same as add/addall above.
+			$raw   = isset( $_POST['items'] ) ? sanitize_text_field( wp_unslash( $_POST['items'] ) ) : '';
+			$items = $raw ? json_decode( $raw, true ) : array();
+			$items = is_array( $items ) ? $items : array();
+			if ( $items ) {
+				foreach ( $cart->get_cart() as $ckey => $citem ) {
+					if ( ! empty( $citem['data'] ) && bb_is_scent_product( $citem['data'] ) ) {
+						$cart->remove_cart_item( $ckey );
+					}
+				}
+				foreach ( $items as $p => $q ) {
+					$p = absint( $p );
+					$q = max( 0, min( 50, (int) $q ) );
+					if ( $p && $q ) {
+						$cart->add_to_cart( $p, $q );
+					}
+				}
+			}
+			break;
+
 		case 'set':
 			$found = false;
 			foreach ( $cart->get_cart() as $key => $item ) {

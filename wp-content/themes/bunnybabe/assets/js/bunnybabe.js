@@ -471,7 +471,7 @@
 		restoreDetails();
 		var h = window.location.hash;
 		if ((h === '#bag' || h === '#checkout') && document.getElementById('bb-bag')) {
-			openSheet('bb-bag');
+			if (h === '#checkout' && !state.empty) { openCheckout(); } else { openSheet('bb-bag'); }
 		}
 	});
 })(jQuery);

@@ -54,6 +54,7 @@ function bb_setup_page() {
 	$rows = array(
 		array( __( 'WooCommerce active', 'bunnybabe' ), $woo ),
 		array( __( 'CHIP payment plugin', 'bunnybabe' ), 'on' === $chip ? true : ( $chip ? __( 'installed — turn it on in WooCommerce → Settings → Payments', 'bunnybabe' ) : false ) ),
+		array( __( 'DuitNow QR image uploaded', 'bunnybabe' ), bb_qr_image_url() ? true : __( 'add it in Appearance → Customize → Bunny Babe', 'bunnybabe' ) ),
 		array( __( 'EasyParcel plugin', 'bunnybabe' ), $ep ),
 		array( __( 'Pretty links (Settings → Permalinks → Post name)', 'bunnybabe' ), (bool) get_option( 'permalink_structure' ) ),
 		array( __( 'HTTPS / SSL', 'bunnybabe' ), 0 === strpos( home_url(), 'https://' ) ),
@@ -82,7 +83,7 @@ function bb_setup_page() {
 		<ul style="list-style:disc;padding-left:20px">
 			<li><?php esc_html_e( 'The 5 scents as products (RM19.90, with photos) in a "Bunny Babe" category', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Voucher BUNNY5 — RM5 off, first order, once per customer', 'bunnybabe' ); ?></li>
-			<li><?php esc_html_e( 'A "Home" page set as your front page, and a "Track Order" page', 'bunnybabe' ); ?></li>
+			<li><?php esc_html_e( 'A "Home" page set as your front page, a "Track Order" page, and an "Order on WhatsApp" ad-landing page (/order)', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Switches the WooCommerce Checkout page to the classic checkout (needed for this design); the old content is kept as a backup', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Store: Malaysia only, currency RM', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Shipping zone "Malaysia" with a RM6 flat rate (FREE from 2 bottles is automatic)', 'bunnybabe' ); ?></li>
@@ -99,7 +100,9 @@ function bb_setup_page() {
 		<h2><?php esc_html_e( 'After setup', 'bunnybabe' ); ?></h2>
 		<ol>
 			<li><?php esc_html_e( 'Appearance → Customize → Bunny Babe: add your affiliate form link (and courier tracking link if you want the button).', 'bunnybabe' ); ?></li>
-			<li><?php esc_html_e( 'WooCommerce → Settings → Payments: turn on CHIP and enter your keys there.', 'bunnybabe' ); ?></li>
+			<li><?php esc_html_e( 'WooCommerce → Settings → Payments: turn on CHIP and enter your keys there. DuitNow QR is on by default.', 'bunnybabe' ); ?></li>
+			<li><?php esc_html_e( 'Appearance → Customize → Bunny Babe: upload your DuitNow QR image and payee name (used for QR payments and the /order page).', 'bunnybabe' ); ?></li>
+			<li><?php esc_html_e( 'Point your ads at /order — customers pick scents, then order on WhatsApp or pay by QR / CHIP.', 'bunnybabe' ); ?></li>
 			<li><?php esc_html_e( 'Place a test order end to end, then check Track Order with the order number and phone.', 'bunnybabe' ); ?></li>
 		</ol>
 	</div>
@@ -252,6 +255,20 @@ function bb_run_setup() {
 			)
 		);
 		$log[] = __( 'Created page "Track Order".', 'bunnybabe' );
+	}
+	if ( ! get_page_by_path( 'order' ) ) {
+		$order_id = wp_insert_post(
+			array(
+				'post_type'   => 'page',
+				'post_title'  => 'Order on WhatsApp',
+				'post_name'   => 'order',
+				'post_status' => 'publish',
+			)
+		);
+		if ( $order_id && ! is_wp_error( $order_id ) ) {
+			update_post_meta( $order_id, '_wp_page_template', 'page-wa-order.php' );
+		}
+		$log[] = __( 'Created page "Order on WhatsApp" (the WhatsApp order / ad landing page).', 'bunnybabe' );
 	}
 
 	// Classic checkout + cart shortcodes (block checkout does not fit this design).
