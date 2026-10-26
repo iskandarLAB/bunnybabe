@@ -200,6 +200,16 @@ add_filter(
 	}
 );
 
+// Friendlier checkout errors: drop the techy "Billing " prefix
+// ("Billing WhatsApp number is a required field" → "WhatsApp number …").
+// Safe here: this one-page checkout has no separate shipping fieldset.
+add_filter(
+	'woocommerce_add_error',
+	function ( $error ) {
+		return is_string( $error ) ? str_replace( 'Billing ', '', $error ) : $error;
+	}
+);
+
 // Cart page, shop and product categories all go to the one page.
 add_action(
 	'template_redirect',
