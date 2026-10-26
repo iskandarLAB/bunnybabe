@@ -146,9 +146,13 @@ function bb_tier_percent( $n ) {
 	return 0 === $rest ? 100 : $rest * 20;
 }
 
-/** Digits of the store WhatsApp number (country code, no +). */
+/**
+ * Digits of the store WhatsApp number in wa.me format (country code, no +).
+ * Accepts any input: 0176842008, 017-684 2008 and 60176842008 all become
+ * 60176842008 (Malaysian 0… is normalised to 60…).
+ */
 function bb_whatsapp_number() {
-	return preg_replace( '/\D/', '', (string) get_theme_mod( 'bb_whatsapp', '60176842008' ) );
+	return bb_normalize_phone( get_theme_mod( 'bb_whatsapp', '60176842008' ) );
 }
 
 /** WhatsApp link from the Customizer number. */
